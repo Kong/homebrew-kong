@@ -11,6 +11,14 @@ $ brew tap thibaultcha/kong
 $ brew install kong
 ```
 
+###### Install with Cassandra
+
+If you want to use a local Cassandra cluster, this tap can also install cassandra if you run it with:
+
+```
+$ brew install kong --with-cassandra
+```
+
 ## Use Kong
 
 ```
