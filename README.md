@@ -17,7 +17,6 @@ $ brew install kong
 $ kong -h
 ```
 
-Kong's documentation is available at: [kong-docs-url].
+Kong's documentation is available at: http://getkong.org/docs.
 
 [kong-url]: http://getkong.org
-[kong-docs-url]: http://getkong.org/docs
