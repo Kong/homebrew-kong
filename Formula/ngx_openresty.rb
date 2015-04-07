@@ -5,8 +5,8 @@ class NgxOpenresty < Formula
   url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
   sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
 
-  depends_on "luajit"
   depends_on "pcre"
+  depends_on "luajit"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
