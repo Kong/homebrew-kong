@@ -7,6 +7,7 @@ Homebrew tap for [Kong](kong-url) :beer:
 ## Install
 
 ```
+$ brew upgrade
 $ brew tap thibaultcha/kong
 $ brew install kong
 ```
