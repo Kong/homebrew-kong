@@ -7,7 +7,6 @@ Homebrew tap for [Kong](kong-url) :beer:
 ## Install
 
 ```
-$ brew upgrade
 $ brew tap thibaultcha/kong
 $ brew install kong
 ```
@@ -19,6 +18,7 @@ $ brew install kong
 If you want to use a local Cassandra cluster, this tap can also install the homebrew/cassandra formula if you run it with:
 
 ```
+$ brew update # for the cassandra formula
 $ brew install kong --with-cassandra
 ```
 
