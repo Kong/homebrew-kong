@@ -1,6 +1,6 @@
 ## Homebrew Kong Tap
 
-Homebrew tap for [Kong](kong-url).
+Homebrew tap for [Kong](kong-url) :beer:
 
 > Kong is a scalable and customizable API Management Layer built on top of Nginx.
 
