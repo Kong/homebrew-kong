@@ -6,6 +6,7 @@ class NgxOpenresty < Formula
   sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
 
   depends_on "pcre"
+  depends_on "luajit"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
