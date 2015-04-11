@@ -6,7 +6,7 @@ Homebrew tap for [Kong] :beer:
 
 ## Install
 
-```
+```shell
 $ brew tap thibaultcha/kong
 $ brew install kong
 ```
@@ -17,17 +17,17 @@ $ brew install kong
 
 If you want to use a local Cassandra cluster, this tap can also install the homebrew/cassandra formula if you run it with:
 
-```
+```shell
 $ brew update # for the cassandra formula
 $ brew install kong --with-cassandra
 ```
 
 ## Use Kong
 
-```
-$ kong -h
+```shell
+$ kong --help
 ```
 
-Kong's documentation is available at: http://getkong.org/docs.
+Get started by reading the documentation at: http://getkong.org/docs.
 
 [Kong]: http://getkong.org
