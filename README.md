@@ -7,7 +7,7 @@ Homebrew tap for [Kong] :beer:
 ## Install
 
 ```shell
-$ brew tap thibaultcha/kong
+$ brew tap mashape/kong
 $ brew install kong
 ```
 
