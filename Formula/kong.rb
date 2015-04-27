@@ -1,8 +1,8 @@
 class Kong < Formula
   homepage "http://getkong.org"
-  url "http://github.com/Mashape/kong/releases/download/0.1.1beta-2/kong-0.1.1beta.tar.gz"
-  version "0.1.1beta"
-  sha256 "6abfea43c705b58e3700b60e4e0bffd529a0bb89ecb311a532d788520f27c70c"
+  url "https://github.com/Mashape/kong/archive/0.2.0-2.tar.gz"
+  version "0.2.0-2"
+  sha256 "889ecd7436ab08ab35b849456fc5400d2a5dbafb285db07ae67b4076d5cd5b63"
 
   depends_on 'pcre'
   depends_on 'openssl'
