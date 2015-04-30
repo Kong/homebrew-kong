@@ -3,6 +3,7 @@ class Kong < Formula
   url "https://github.com/Mashape/kong/archive/0.2.0-2.tar.gz"
   version "0.2.0-2"
   sha256 "889ecd7436ab08ab35b849456fc5400d2a5dbafb285db07ae67b4076d5cd5b63"
+  head "https://github.com/mashape/kong.git"
 
   depends_on 'openssl'
   depends_on 'mashape/kong/ngx_openresty'
