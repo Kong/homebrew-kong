@@ -4,6 +4,7 @@ class Kong < Formula
   sha256 "a837fa22023d3b9edd8109e6ce75ea3702c655598bad2505f7de666bf4b9ca4e"
   head "https://github.com/mashape/kong.git"
 
+  depends_on 'dnsmasq'
   depends_on 'openssl'
   depends_on 'mashape/kong/ngx_openresty'
   depends_on 'mashape/kong/luarocks_luajit'
