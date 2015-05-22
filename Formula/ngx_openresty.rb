@@ -2,9 +2,21 @@ require "formula"
 
 class NgxOpenresty < Formula
   homepage "http://openresty.org/"
-  url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
-  sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
 
+  stable do
+    url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
+    sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
+  end
+
+  devel do
+    url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
+    sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
+    # Patch to support ssl-cert-by-lua
+    # https://github.com/openresty/lua-nginx-module/issues/331#issuecomment-77279170
+    patch :DATA
+  end
+
+  depends_on "openssl"
   depends_on "pcre"
   depends_on "luajit"
 
@@ -39,3 +51,42 @@ class NgxOpenresty < Formula
     bin.install_symlink "#{prefix}/nginx/sbin/nginx"
   end
 end
+
+__END__
+diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c
+--- a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c 2014-08-05 04:13:07.000000000 -0700
++++ b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c 2014-09-12 12:17:33.034582693 -0700
+@@ -1121,6 +1121,21 @@ ngx_ssl_handshake(ngx_connection_t *c)
+         return NGX_AGAIN;
+     }
+
++    if (sslerr == SSL_ERROR_WANT_X509_LOOKUP) {
++        c->read->handler = ngx_ssl_handshake_handler;
++        c->write->handler = ngx_ssl_handshake_handler;
++
++        if (ngx_handle_read_event(c->read, 0) != NGX_OK) {
++            return NGX_ERROR;
++        }
++
++        if (ngx_handle_write_event(c->write, 0) != NGX_OK) {
++            return NGX_ERROR;
++        }
++
++        return NGX_AGAIN;
++    }
++
+     err = (sslerr == SSL_ERROR_SYSCALL) ? ngx_errno : 0;
+
+     c->ssl->no_wait_shutdown = 1;
+diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h
+--- a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h 2014-08-05 04:13:07.000000000 -0700
++++ b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h 2014-09-12 12:16:32.016208272 -0700
+@@ -56,6 +56,8 @@ typedef struct {
+     ngx_event_handler_pt        saved_read_handler;
+     ngx_event_handler_pt        saved_write_handler;
+
++    void                       *lua_ctx;  /* used by 3rd-party modules */
++
+     unsigned                    handshaked:1;
+     unsigned                    renegotiation:1;
+     unsigned                    buffer:1;
