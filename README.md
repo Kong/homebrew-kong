@@ -32,7 +32,6 @@ $ brew install kong --HEAD
 **Note:** To install Kong `0.3.0` (current `HEAD`), a patch on OpenResty is needed to support the `ssl_cert_by_lua` directive:
 
 ```shell
-$ brew install mashape/ngx_openresty --devel
 $ brew install kong --HEAD
 ```
 

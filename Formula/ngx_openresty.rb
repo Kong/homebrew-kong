@@ -19,6 +19,7 @@ class NgxOpenresty < Formula
   depends_on "openssl"
   depends_on "pcre"
   depends_on "luajit"
+  depends_on "mashape/kong/luarocks_luajit"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
@@ -41,7 +42,35 @@ class NgxOpenresty < Formula
       args << "--with-dtrace-probes"
       args << "--with-no-pool-patch"
 
-      opoo "Openresty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
+      opoo "OpenResty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
+    end
+
+    if build.devel?
+      # Download the ssl-cert-by-lua branch and add ssl.lua to the lua_package_path
+      system "curl -s -L -o #{buildpath}/ssl-cert-by-lua.tar.gz https://github.com/openresty/lua-nginx-module/archive/ssl-cert-by-lua.tar.gz"
+      system "tar -xzf ssl-cert-by-lua.tar.gz"
+      system "rm -rf bundle/ngx_lua-0.9.15/*"
+      system "cp -R lua-nginx-module-ssl-cert-by-lua/* bundle/ngx_lua-0.9.15/"
+      system %{
+        echo '
+          package = "ngxssl"
+          version = "0.1-1"
+          source = {
+            url = "git://github.com/openresty/lua-nginx-module",
+            branch = "ssl-cert-by-lua"
+          }
+          dependencies = {
+            "lua >= 5.1"
+          }
+          build = {
+            type = "builtin",
+            modules = {
+              ["ngx.ssl"] = "#{buildpath}/lua-nginx-module-ssl-cert-by-lua/lua/ngx/ssl.lua"
+            }
+          }
+        ' > #{buildpath}/ngxssl-0.1-1.rockspec
+      }
+      system "luarocks make #{buildpath}/ngxssl-0.1-1.rockspec --local"
     end
 
     system "./configure", *args
