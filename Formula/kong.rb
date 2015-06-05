@@ -2,17 +2,16 @@ class Kong < Formula
   homepage "http://getkong.org"
 
   stable do
-    url "https://github.com/Mashape/kong/archive/0.2.1.tar.gz"
-    sha256 "a837fa22023d3b9edd8109e6ce75ea3702c655598bad2505f7de666bf4b9ca4e"
-    depends_on "mashape/kong/ngx_openresty"
+    url "https://github.com/Mashape/kong/archive/0.3.0.tar.gz"
+    sha256 "ef24caff3a966876f4dbb31da0f56e996e3121cd82256a52dbe87c9b68d01c55"
   end
 
   head do
     url "https://github.com/mashape/kong.git"
-    depends_on "mashape/kong/ngx_openresty" => :devel
   end
 
   depends_on "openssl"
+  depends_on "mashape/kong/ngx_openresty"
   depends_on "mashape/kong/luarocks_luajit"
 
   option "with-cassandra", "Also install the cassandra formula from homebrew/cassandra"

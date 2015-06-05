@@ -6,11 +6,6 @@ class NgxOpenresty < Formula
   stable do
     url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
     sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
-  end
-
-  devel do
-    url "http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz"
-    sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
     # Patch to support ssl-cert-by-lua
     # https://github.com/openresty/lua-nginx-module/issues/331#issuecomment-77279170
     patch :DATA
@@ -45,33 +40,31 @@ class NgxOpenresty < Formula
       opoo "OpenResty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
     end
 
-    if build.devel?
-      # Download the ssl-cert-by-lua branch and add ssl.lua to the lua_package_path
-      system "curl -s -L -o #{buildpath}/ssl-cert-by-lua.tar.gz https://github.com/openresty/lua-nginx-module/archive/ssl-cert-by-lua.tar.gz"
-      system "tar -xzf ssl-cert-by-lua.tar.gz"
-      system "rm -rf bundle/ngx_lua-0.9.15/*"
-      system "cp -R lua-nginx-module-ssl-cert-by-lua/* bundle/ngx_lua-0.9.15/"
-      system %{
-        echo '
-          package = "ngxssl"
-          version = "0.1-1"
-          source = {
-            url = "git://github.com/openresty/lua-nginx-module",
-            branch = "ssl-cert-by-lua"
+    # Download the ssl-cert-by-lua branch and add ssl.lua to the lua_package_path
+    system "curl -s -L -o #{buildpath}/ssl-cert-by-lua.tar.gz https://github.com/openresty/lua-nginx-module/archive/ssl-cert-by-lua.tar.gz"
+    system "tar -xzf ssl-cert-by-lua.tar.gz"
+    system "rm -rf bundle/ngx_lua-0.9.15/*"
+    system "cp -R lua-nginx-module-ssl-cert-by-lua/* bundle/ngx_lua-0.9.15/"
+    system %{
+      echo '
+        package = "ngxssl"
+        version = "0.1-1"
+        source = {
+          url = "git://github.com/openresty/lua-nginx-module",
+          branch = "ssl-cert-by-lua"
+        }
+        dependencies = {
+          "lua >= 5.1"
+        }
+        build = {
+          type = "builtin",
+          modules = {
+            ["ngx.ssl"] = "#{buildpath}/lua-nginx-module-ssl-cert-by-lua/lua/ngx/ssl.lua"
           }
-          dependencies = {
-            "lua >= 5.1"
-          }
-          build = {
-            type = "builtin",
-            modules = {
-              ["ngx.ssl"] = "#{buildpath}/lua-nginx-module-ssl-cert-by-lua/lua/ngx/ssl.lua"
-            }
-          }
-        ' > #{buildpath}/ngxssl-0.1-1.rockspec
-      }
-      system "luarocks make #{buildpath}/ngxssl-0.1-1.rockspec --local"
-    end
+        }
+      ' > #{buildpath}/ngxssl-0.1-1.rockspec
+    }
+    system "luarocks make #{buildpath}/ngxssl-0.1-1.rockspec --local"
 
     system "./configure", *args
     system "make"

@@ -29,8 +29,6 @@ $ brew tap mashape/kong
 $ brew install kong --HEAD
 ```
 
-**Note:** Kong `0.3.0` (current `HEAD`) needs a patch on OpenResty to support the `ssl_cert_by_lua` directive. This is how you need to install Kong if you want to run it. It will be the stable install once `0.3.0` will be released.
-
 ## Use Kong
 
 ```shell
