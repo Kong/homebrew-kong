@@ -5,7 +5,7 @@ class NgxOpenresty < Formula
 
   stable do
     url "http://openresty.org/download/ngx_openresty-1.7.10.2.tar.gz"
-    sha1 "0cc7a3fe75fbe50dec619af1a09b87f7f8c79e1d"
+    sha1 "9b18a6ec7ce1f3f8bbd59bfe36e2160cc9554909"
     # Patch to support ssl-cert-by-lua
     # https://github.com/openresty/lua-nginx-module/issues/331#issuecomment-77279170
     patch :DATA
