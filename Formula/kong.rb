@@ -2,8 +2,8 @@ class Kong < Formula
   homepage "http://getkong.org"
 
   stable do
-    url "http://downloadkong.org/source/tar.gz"
-    sha256 :no_check
+    url "https://github.com/Mashape/kong/archive/0.4.1.tar.gz"
+    sha256 "ccf65fec26934670140195d22852dde55d573786fe3500dfbef5b6688741cba8"
   end
 
   head do
