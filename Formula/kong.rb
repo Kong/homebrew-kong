@@ -3,7 +3,7 @@ class Kong < Formula
 
   stable do
     url "https://github.com/Mashape/kong/archive/0.4.2.tar.gz"
-    sha256 "838d7672275e23a1bebd763890bd840277657c18a9ddf9ad1ac75a49bf56c4b2"
+    sha256 "9d7a1503e75ed7ffce702ca797d18b30783a62aa01884ec3f7f45873cad67fb8"
   end
 
   head do
