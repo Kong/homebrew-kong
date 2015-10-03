@@ -55,9 +55,9 @@ class NgxOpenresty < Formula
 end
 
 __END__
-diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c
---- a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c 2014-08-05 04:13:07.000000000 -0700
-+++ b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.c 2014-09-12 12:17:33.034582693 -0700
+diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.9.3/src/event/ngx_event_openssl.c b/bundle/nginx-1.9.3/src/event/ngx_event_openssl.c
+--- a/bundle/nginx-1.9.3/src/event/ngx_event_openssl.c 2014-08-05 04:13:07.000000000 -0700
++++ b/bundle/nginx-1.9.3/src/event/ngx_event_openssl.c 2014-09-12 12:17:33.034582693 -0700
 @@ -1121,6 +1121,21 @@ ngx_ssl_handshake(ngx_connection_t *c)
          return NGX_AGAIN;
      }
@@ -80,9 +80,9 @@ diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.7.10/src/event/ngx_e
      err = (sslerr == SSL_ERROR_SYSCALL) ? ngx_errno : 0;
 
      c->ssl->no_wait_shutdown = 1;
-diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h
---- a/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h 2014-08-05 04:13:07.000000000 -0700
-+++ b/bundle/nginx-1.7.10/src/event/ngx_event_openssl.h 2014-09-12 12:16:32.016208272 -0700
+diff --exclude '*~' '--exclude=*.swp' -upr a/bundle/nginx-1.9.3/src/event/ngx_event_openssl.h b/bundle/nginx-1.9.3/src/event/ngx_event_openssl.h
+--- a/bundle/nginx-1.9.3/src/event/ngx_event_openssl.h 2014-08-05 04:13:07.000000000 -0700
++++ b/bundle/nginx-1.9.3/src/event/ngx_event_openssl.h 2014-09-12 12:16:32.016208272 -0700
 @@ -56,6 +56,8 @@ typedef struct {
      ngx_event_handler_pt        saved_read_handler;
      ngx_event_handler_pt        saved_write_handler;
