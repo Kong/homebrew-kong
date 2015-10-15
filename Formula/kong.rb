@@ -7,7 +7,7 @@ class Kong < Formula
   end
 
   head do
-    url "https://github.com/mashape/kong.git"
+    url "https://github.com/mashape/kong.git", :branch => "next"
   end
 
   depends_on "openssl"
