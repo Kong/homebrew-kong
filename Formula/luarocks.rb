@@ -8,14 +8,14 @@ class Luarocks < Formula
   sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
   head "https://github.com/keplerproject/luarocks.git"
 
-  depends_on "thibaultcha/kong/luajit"
+  depends_on "mashape/kong/luajit"
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
   end
 
   def install
-    luajit = Formula["thibaultcha/kong/luajit"]
+    luajit = Formula["mashape/kong/luajit"]
 
     # Install to the Cellar, but the tree to install modules is in HOMEBREW_PREFIX
     args = [
