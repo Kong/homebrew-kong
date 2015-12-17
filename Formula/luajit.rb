@@ -48,6 +48,7 @@ class Luajit < Formula
     rm_rf share/"lua"
 
     mv bin/"luajit-2.1.0-beta1", bin/"luajit"
+    mv bin/"luajit-2.1.0-beta1", bin/"lua" # TODO: remove for Kong 0.6.0
   end
 
   test do
