@@ -11,13 +11,13 @@ class NgxOpenresty < Formula
 
   depends_on "openssl"
   depends_on "pcre"
-  depends_on "mashape/kong/luajit"
-  depends_on "mashape/kong/luarocks"
+  depends_on "thibaultcha/kong/luajit"
+  depends_on "thibaultcha/kong/luarocks"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   def install
-    luajit = Formula["mashape/kong/luajit"]
+    luajit = Formula["thibaultcha/kong/luajit"]
 
     args = [
       "--prefix=#{prefix}",

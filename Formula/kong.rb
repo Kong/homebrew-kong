@@ -12,8 +12,8 @@ class Kong < Formula
 
   depends_on "openssl"
   depends_on "dnsmasq"
-  depends_on "mashape/kong/ngx_openresty"
-  depends_on "mashape/kong/luarocks_luajit"
+  depends_on "thibaultcha/kong/ngx_openresty"
+  depends_on "thibaultcha/kong/luarocks_luajit"
 
   option "with-cassandra", "Also install the cassandra formula from homebrew/cassandra"
   depends_on "cassandra" => :optional
