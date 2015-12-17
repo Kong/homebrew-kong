@@ -1,5 +1,3 @@
-require "formula"
-
 class NgxOpenresty < Formula
   homepage "http://openresty.org/"
 
@@ -13,20 +11,22 @@ class NgxOpenresty < Formula
 
   depends_on "openssl"
   depends_on "pcre"
-  depends_on "luajit"
-  depends_on "mashape/kong/luarocks_luajit"
+  depends_on "mashape/kong/luajit"
+  depends_on "mashape/kong/luarocks"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   def install
+    luajit = Formula["mashape/kong/luajit"]
+
     args = [
       "--prefix=#{prefix}",
       "--with-ipv6",
-      "--with-luajit",
       "--with-pcre-jit",
       "--with-http_ssl_module",
       "--with-http_realip_module",
       "--with-http_stub_status_module",
+      "--with-luajit=#{luajit.prefix}",
       "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include",
       "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib"
     ]
