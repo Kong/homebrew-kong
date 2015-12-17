@@ -1,5 +1,6 @@
 class Kong < Formula
-  homepage "http://getkong.org"
+  homepage "https://getkong.org"
+  desc "Open-source Microservice & API Gateway"
 
   stable do
     url "https://github.com/Mashape/kong/archive/0.5.4.tar.gz"
@@ -12,8 +13,8 @@ class Kong < Formula
 
   depends_on "openssl"
   depends_on "dnsmasq"
+  depends_on "thibaultcha/kong/luarocks"
   depends_on "thibaultcha/kong/ngx_openresty"
-  depends_on "thibaultcha/kong/luarocks_luajit"
 
   option "with-cassandra", "Also install the cassandra formula from homebrew/cassandra"
   depends_on "cassandra" => :optional
