@@ -29,10 +29,7 @@ class Luajit < Formula
 
     # This doesn't yet work under superenv because it removes "-g"
     args << "CCDEBUG=-g" if build.with? "debug"
-
-    # The development branch of LuaJIT normally does not install "luajit".
-    args << "INSTALL_TNAME=luajit" if build.devel?
-
+    args << "INSTALL_TNAME=luajit"
     args << "XCFLAGS=-DLUAJIT_ENABLE_LUA52COMPAT" if build.with? "52compat"
 
     system "make", "amalg", *args
@@ -43,12 +40,11 @@ class Luajit < Formula
     lib.install_symlink lib/"libluajit-5.1.2.0.4.dylib" => "libluajit.dylib"
     lib.install_symlink lib/"libluajit-5.1.a" => "libluajit.a"
 
+    bin.install_symlink bin/"luajit" => "lua"
+
     # Having an empty Lua dir in Lib/share can screw with other Homebrew Luas.
     rm_rf lib/"lua"
     rm_rf share/"lua"
-
-    mv bin/"luajit-2.1.0-beta1", bin/"luajit"
-    mv bin/"luajit-2.1.0-beta1", bin/"lua" # TODO: remove for Kong 0.6.0
   end
 
   test do
