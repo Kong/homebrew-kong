@@ -13,15 +13,6 @@ $ brew install kong
 
 ##### Options
 
-###### Install Cassandra
-
-If you want to use a local Cassandra cluster, this tap can also install the homebrew/cassandra formula if you run it with:
-
-```shell
-$ brew update # for the cassandra formula
-$ brew install kong --with-cassandra
-```
-
 ## Install HEAD (unstable)
 
 ```
