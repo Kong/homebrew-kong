@@ -20,6 +20,10 @@ class Kong < Formula
   depends_on "cassandra" => :optional
 
   def install
-    system "make install"
+    system "make", "install"
+    # hack: to avoid the empty installation error, we override the kong script installed by
+    # luarocks in 'make install' with a proper symlink from this Formula.
+    rm "#{HOMEBREW_PREFIX}/bin/kong"
+    bin.install "bin/kong"
   end
 end
