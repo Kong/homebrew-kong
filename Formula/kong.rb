@@ -12,6 +12,10 @@ class Kong < Formula
     url "https://github.com/mashape/kong.git", :branch => "next"
   end
 
+  devel do
+    url "https://github.com/mashape/kong.git", :tag => "0.6.0rc3"
+  end
+
   depends_on "openssl"
   depends_on "dnsmasq"
   depends_on "mashape/kong/luarocks"
@@ -27,4 +31,19 @@ class Kong < Formula
     rm "#{HOMEBREW_PREFIX}/bin/kong"
     bin.install "bin/kong"
   end
+
+  def caveats
+    msg = ""
+    if devel?
+      msg += <<-EOS.undent
+        Kong 0.6.0 requires Serf. You can use:
+
+        brew cask install serf.
+
+        if you want to use Homebrew to install it.
+      EOS
+    end
+    msg
+  end
 end
+
