@@ -7,13 +7,7 @@ class Kong < Formula
     sha256 "7c604bafd0f3600ff2b7225ba69d60d3504fabb1c332a6b371b47d14019d973e"
   end
 
-  head do
-    url "https://github.com/mashape/kong.git", :branch => "next"
-  end
-
-  devel do
-    url "https://github.com/mashape/kong.git", :branch => "next"
-  end
+  head "https://github.com/mashape/kong.git", :branch => "next"
 
   depends_on "openssl"
   depends_on "dnsmasq"

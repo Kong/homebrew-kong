@@ -19,15 +19,6 @@ $ brew cask install serf
 
 ##### Options
 
-### Install devel
-
-devel points to the latest Release Candidate of Kong, or if none is currently released, to HEAD.
-
-```
-$ brew tap mashape/kong
-$ brew install --devel kong
-```
-
 ### Install HEAD (unstable)
 
 HEAD points to Kong's `next` branch, the development branch for cutting edge installs.
