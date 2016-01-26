@@ -1,11 +1,10 @@
 class Kong < Formula
   homepage "https://getkong.org"
   desc "Open-source Microservice and API Gateway"
-  revision 1
 
   stable do
-    url "https://github.com/Mashape/kong/archive/0.5.4.tar.gz"
-    sha256 "bdfa5fb49c07f83aabd2a8d7e308226f6f0363865f28c30504c70ba73b574f90"
+    url "https://github.com/Mashape/kong/archive/0.6.0.tar.gz"
+    sha256 "7c604bafd0f3600ff2b7225ba69d60d3504fabb1c332a6b371b47d14019d973e"
   end
 
   head do
@@ -13,7 +12,7 @@ class Kong < Formula
   end
 
   devel do
-    url "https://github.com/mashape/kong.git", :tag => "0.6.0rc3"
+    url "https://github.com/mashape/kong.git", :branch => "next"
   end
 
   depends_on "openssl"
@@ -32,18 +31,12 @@ class Kong < Formula
     bin.install "bin/kong"
   end
 
-  def caveats
-    msg = ""
-    if devel?
-      msg += <<-EOS.undent
-        Kong 0.6.0 requires Serf. You can use:
+  def caveats; <<-EOS.undent
+      Kong requires Serf. You can use:
 
-        brew cask install serf.
+      brew cask install serf.
 
-        if you want to use Homebrew to install it.
-      EOS
-    end
-    msg
+      if you want to use Homebrew to install it.
+    EOS
   end
 end
-

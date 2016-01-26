@@ -11,21 +11,21 @@ $ brew tap mashape/kong
 $ brew install kong
 ```
 
+**Note**: Kong requires [Serf], which is not included in this Formula but can be installed via Homebrew with:
+
+```shell
+$ brew cask install serf
+```
+
 ##### Options
 
 ### Install devel
 
-devel points to the latest Release Candidate of Kong.
+devel points to the latest Release Candidate of Kong, or if none is currently released, to HEAD.
 
 ```
 $ brew tap mashape/kong
 $ brew install --devel kong
-```
-
-**Note**: the current `0.6.0rc3` release of Kong also requires Serf. You can install Serf with:
-
-```
-$ brew cask install serf
 ```
 
 ### Install HEAD (unstable)
@@ -34,7 +34,7 @@ HEAD points to Kong's `next` branch, the development branch for cutting edge ins
 
 ```
 $ brew tap mashape/kong
-$ brew install kong --HEAD
+$ brew install --HEAD kong
 ```
 
 ### Use Kong
@@ -54,3 +54,4 @@ Could not find expected file openssl/ssl.h, or openssl/ssl.h for OPENSSL -- you 
 Make sure you have installed `openssl` from Homebrew and that is is linked (`brew link --force openssl`).
 
 [Kong]: http://getkong.org
+[Serf]: https://www.serfdom.io
