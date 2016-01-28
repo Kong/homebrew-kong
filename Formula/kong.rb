@@ -4,7 +4,7 @@ class Kong < Formula
 
   stable do
     url "https://github.com/Mashape/kong/archive/0.6.0.tar.gz"
-    sha256 "7c604bafd0f3600ff2b7225ba69d60d3504fabb1c332a6b371b47d14019d973e"
+    sha256 "b0320d1c519125713926963e59fbb3cf8969ecbb0d5fa5bfbd87c179c22290d2"
   end
 
   head "https://github.com/mashape/kong.git", :branch => "next"
