@@ -1,6 +1,7 @@
 class Kong < Formula
   homepage "https://getkong.org"
   desc "Open-source Microservice and API Gateway"
+  revision 1
 
   stable do
     url "https://github.com/Mashape/kong/archive/0.6.0.tar.gz"
@@ -11,6 +12,7 @@ class Kong < Formula
 
   depends_on "openssl"
   depends_on "dnsmasq"
+  depends_on "ossp-uuid"
   depends_on "mashape/kong/luarocks"
   depends_on "mashape/kong/ngx_openresty"
 
