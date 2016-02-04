@@ -1,11 +1,10 @@
 class Kong < Formula
   homepage "https://getkong.org"
   desc "Open-source Microservice and API Gateway"
-  revision 1
 
   stable do
-    url "https://github.com/Mashape/kong/archive/0.6.0.tar.gz"
-    sha256 "b0320d1c519125713926963e59fbb3cf8969ecbb0d5fa5bfbd87c179c22290d2"
+    url "https://github.com/Mashape/kong/archive/0.6.1.tar.gz"
+    sha256 "da5ff5b1aa921574031f4defad6133dd229f523bc79479ffa8f4d8a92cfc3750"
   end
 
   head "https://github.com/mashape/kong.git", :branch => "next"
