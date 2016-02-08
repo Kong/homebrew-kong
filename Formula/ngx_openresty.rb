@@ -9,6 +9,11 @@ class NgxOpenresty < Formula
     patch :DATA
   end
 
+  devel do
+    url "https://openresty.org/download/openresty-1.9.7.3.tar.gz"
+    sha256 "3e4422576d11773a03264021ff7985cd2eeac3382b511ae3052e835210a9a69a"
+  end
+
   depends_on "openssl"
   depends_on "pcre"
   depends_on "mashape/kong/luajit"
@@ -40,11 +45,13 @@ class NgxOpenresty < Formula
       opoo "OpenResty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
     end
 
-    # Download the ssl-cert-by-lua branch and add ssl.lua to the lua_package_path
-    system "curl -s -L -o #{buildpath}/ssl-cert-by-lua.tar.gz https://github.com/openresty/lua-nginx-module/archive/ssl-cert-by-lua.tar.gz"
-    system "tar -xzf ssl-cert-by-lua.tar.gz"
-    system "rm -rf bundle/ngx_lua-0.9.16/*"
-    system "cp -R lua-nginx-module-ssl-cert-by-lua/* bundle/ngx_lua-0.9.16/"
+    if build.stable?
+      # Download the ssl-cert-by-lua branch and add ssl.lua to the lua_package_path
+      system "curl -s -L -o #{buildpath}/ssl-cert-by-lua.tar.gz https://github.com/openresty/lua-nginx-module/archive/ssl-cert-by-lua.tar.gz"
+      system "tar -xzf ssl-cert-by-lua.tar.gz"
+      system "rm -rf bundle/ngx_lua-0.9.16/*"
+      system "cp -R lua-nginx-module-ssl-cert-by-lua/* bundle/ngx_lua-0.9.16/"
+    end
 
     system "./configure", *args
     system "make"
