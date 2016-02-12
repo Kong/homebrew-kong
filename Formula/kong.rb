@@ -6,7 +6,13 @@ class Kong < Formula
     url "https://github.com/Mashape/kong.git", :tag => "0.6.1"
   end
 
-  head "https://github.com/mashape/kong.git", :branch => "next"
+  devel do
+    url "https://github.com/mashape/kong.git", :tag => "0.7.0rc1"
+  end
+
+  head do
+    url "https://github.com/Mashape/kong.git", :branch => "next"
+  end
 
   depends_on "openssl"
   depends_on "dnsmasq"
