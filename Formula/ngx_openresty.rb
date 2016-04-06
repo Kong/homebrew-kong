@@ -2,8 +2,8 @@ class NgxOpenresty < Formula
   homepage "http://openresty.org/"
 
   stable do
-    url "https://openresty.org/download/openresty-1.9.7.3.tar.gz"
-    sha256 "3e4422576d11773a03264021ff7985cd2eeac3382b511ae3052e835210a9a69a"
+    url "https://openresty.org/download/openresty-1.9.7.4.tar.gz"
+    sha256 "aa5dcae035dda6e483bc1bd3d969d7113205dc2d0a3702ece0ad496c88a653c5"
   end
 
   depends_on "openssl"
