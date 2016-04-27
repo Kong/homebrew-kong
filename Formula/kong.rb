@@ -3,11 +3,11 @@ class Kong < Formula
   desc "Open-source Microservice and API Gateway"
 
   stable do
-    url "https://github.com/Mashape/kong.git", :tag => "0.8.0"
+    url "https://github.com/Mashape/kong.git", :tag => "0.8.1"
   end
 
   #devel do
-  #  url "https://github.com/mashape/kong.git", :tag => "0.7.0rc1"
+  #  url "https://github.com/mashape/kong.git", :tag => "0.8.0rc2"
   #end
 
   head do
