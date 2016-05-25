@@ -4,8 +4,8 @@
 
 class Luarocks < Formula
   homepage "http://luarocks.org"
-  url "http://luarocks.org/releases/luarocks-2.2.2.tar.gz"
-  sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+  url "http://luarocks.org/releases/luarocks-2.3.0.tar.gz"
+  sha256 "68e38feeb66052e29ad1935a71b875194ed8b9c67c2223af5f4d4e3e2464ed97"
   head "https://github.com/keplerproject/luarocks.git"
 
   depends_on "mashape/kong/luajit"
