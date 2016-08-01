@@ -41,6 +41,6 @@ class NgxOpenresty < Formula
     system "make"
     system "make install"
 
-    bin.install_symlink "#{prefix}/nginx/sbin/nginx"
+    bin.install "#{prefix}/nginx/sbin/nginx"
   end
 end
