@@ -13,9 +13,18 @@ $ brew install kong
 
 ##### Options
 
+### Install devel (release candidates)
+
+When a release candidate is available, it can be installed via this Formula's devel channel:
+
+```
+$ brew tap mashape/kong
+$ brew install --devel kong
+```
+
 ### Install HEAD (unstable)
 
-HEAD points to Kong's `next` branch, the development branch for cutting edge installs.
+HEAD points to Kong's `next` branch, the development branch for cutting edge installs:
 
 ```
 $ brew tap mashape/kong
@@ -28,14 +37,6 @@ $ brew install --HEAD kong
 $ kong --help
 ```
 
-Get started by reading the documentation at: http://getkong.org/docs.
+Get started by reading the documentation at: https://getkong.org/docs.
 
-### Troubleshooting
-
-```
-Could not find expected file openssl/ssl.h, or openssl/ssl.h for OPENSSL -- you may have to install OPENSSL in your system and/or pass OPENSSL_DIR or OPENSSL_INCDIR to the luarocks command. Example: luarocks install luasec OPENSSL_DIR=/usr/local
-```
-
-Make sure you have installed `openssl` from Homebrew and that is is linked (`brew link --force openssl`).
-
-[Kong]: http://getkong.org
+[Kong]: https://getkong.org
