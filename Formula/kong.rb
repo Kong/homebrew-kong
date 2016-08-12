@@ -14,6 +14,7 @@ class Kong < Formula
     url "https://github.com/Mashape/kong.git", :branch => "next"
   end
 
+  depends_on "ossp-uuid" if not build.devel?
   depends_on "openssl"
   depends_on "dnsmasq"
   depends_on "serf"
