@@ -7,7 +7,7 @@ class Kong < Formula
   end
 
   devel do
-    url "https://github.com/mashape/kong.git", :tag => "0.9.0rc1"
+    url "https://github.com/mashape/kong.git", :tag => "0.9.0rc3"
   end
 
   head do
@@ -16,7 +16,6 @@ class Kong < Formula
 
   depends_on "openssl"
   depends_on "dnsmasq"
-  depends_on "ossp-uuid"
   depends_on "serf"
   depends_on "mashape/kong/luarocks"
   depends_on "mashape/kong/ngx_openresty"
