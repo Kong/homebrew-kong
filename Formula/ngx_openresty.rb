@@ -6,8 +6,8 @@ class NgxOpenresty < Formula
     sha256 "75cf020144048c9013ee487cb48107a5b99de04a5a8fa83839c8b4c3aa4eb0db"
   end
 
-  depends_on "openssl"
   depends_on "pcre"
+  depends_on "openssl"
   depends_on "mashape/kong/luajit"
   depends_on "mashape/kong/luarocks"
 
