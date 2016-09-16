@@ -8,23 +8,23 @@ class Luarocks < Formula
   sha256 "44381c9128d036247d428531291d1ff9405ae1daa238581d3c15f96d899497c3"
   head "https://github.com/keplerproject/luarocks.git"
 
-  depends_on "mashape/kong/luajit"
+  depends_on "mashape/kong/ngx_openresty"
 
   fails_with :llvm do
     cause "Lua itself compiles with llvm, but may fail when other software tries to link."
   end
 
   def install
-    luajit = Formula["mashape/kong/luajit"]
+    openresty = Formula["mashape/kong/ngx_openresty"]
 
     # Install to the Cellar, but the tree to install modules is in HOMEBREW_PREFIX
     args = [
       "--prefix=#{prefix}",
-      "--with-lua=#{luajit.prefix}",
-      "--with-lua-include=#{luajit.include}/luajit-2.1",
-      "--lua-suffix=jit",
       "--rocks-tree=#{HOMEBREW_PREFIX}",
-      "--sysconfdir=#{etc}/luarocks"
+      "--sysconfdir=#{etc}/luarocks",
+      "--lua-suffix=jit",
+      "--with-lua=#{openresty.prefix}/luajit",
+      "--with-lua-include=#{openresty.prefix}/luajit/include/luajit-2.1"
     ]
 
     system "./configure", *args
