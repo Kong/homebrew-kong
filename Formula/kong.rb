@@ -3,7 +3,7 @@ class Kong < Formula
   desc "Open-source Microservice and API Gateway"
 
   stable do
-    url "https://github.com/Mashape/kong.git", :tag => "0.9.1"
+    url "https://github.com/Mashape/kong.git", :tag => "0.9.3"
   end
 
   #devel do
@@ -16,12 +16,11 @@ class Kong < Formula
 
   depends_on "openssl"
   depends_on "dnsmasq"
-  depends_on "mashape/kong/serf"
+  depends_on "serf"
   depends_on "mashape/kong/luarocks"
   depends_on "mashape/kong/ngx_openresty"
 
   conflicts_with "cassandra", :because => "Kong only supports Cassandra 2.1/2.2"
-  conflicts_with "serf", :because => "Kong only supports Serf 0.7.0"
 
   def install
     system "luarocks make OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
