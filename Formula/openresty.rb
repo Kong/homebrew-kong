@@ -1,4 +1,4 @@
-class NgxOpenresty < Formula
+class Openresty < Formula
   homepage "http://openresty.org/"
 
   stable do
@@ -8,14 +8,10 @@ class NgxOpenresty < Formula
 
   depends_on "pcre"
   depends_on "openssl"
-  depends_on "mashape/kong/luajit"
-  depends_on "mashape/kong/luarocks"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   def install
-    luajit = Formula["mashape/kong/luajit"]
-
     args = [
       "--prefix=#{prefix}",
       "--with-ipv6",
@@ -23,7 +19,6 @@ class NgxOpenresty < Formula
       "--with-http_ssl_module",
       "--with-http_realip_module",
       "--with-http_stub_status_module",
-      "--with-luajit=#{luajit.prefix}",
       "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include,#{HOMEBREW_PREFIX}/opt/openssl/include",
       "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{HOMEBREW_PREFIX}/opt/openssl/lib"
     ]
@@ -34,7 +29,7 @@ class NgxOpenresty < Formula
       args << "--with-dtrace-probes"
       args << "--with-no-pool-patch"
 
-      opoo "OpenResty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
+      opoo "OpenResty will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it manually."
     end
 
     system "./configure", *args
