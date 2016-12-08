@@ -19,8 +19,8 @@ class Openresty < Formula
       "--with-http_ssl_module",
       "--with-http_realip_module",
       "--with-http_stub_status_module",
-      "--with-cc-opt='-I#{HOMEBREW_PREFIX}/include -L#{HOMEBREW_PREFIX}/opt/openssl/include'",
-      "--with-ld-opt='-L#{HOMEBREW_PREFIX}/lib -L#{HOMEBREW_PREFIX}/opt/openssl/lib'"
+      "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include,#{HOMEBREW_PREFIX}/opt/openssl/include",
+      "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{HOMEBREW_PREFIX}/opt/openssl/lib"
     ]
 
     # Debugging mode, unfortunately without debugging symbols
