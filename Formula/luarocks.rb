@@ -1,6 +1,6 @@
 class Luarocks < Formula
-  homepage "http://luarocks.org"
-  url "http://luarocks.org/releases/luarocks-2.4.0.tar.gz"
+  homepage "https://luarocks.org"
+  url "https://luarocks.org/releases/luarocks-2.4.0.tar.gz"
   sha256 "44381c9128d036247d428531291d1ff9405ae1daa238581d3c15f96d899497c3"
   head "https://github.com/keplerproject/luarocks.git"
 

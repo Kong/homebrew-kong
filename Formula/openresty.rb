@@ -1,5 +1,5 @@
 class Openresty < Formula
-  homepage "http://openresty.org/"
+  homepage "https://openresty.org/"
 
   stable do
     url "https://openresty.org/download/openresty-1.11.2.1.tar.gz"
