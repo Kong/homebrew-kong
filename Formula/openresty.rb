@@ -20,7 +20,8 @@ class Openresty < Formula
       "--with-http_realip_module",
       "--with-http_stub_status_module",
       "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include,#{HOMEBREW_PREFIX}/opt/openssl/include",
-      "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{HOMEBREW_PREFIX}/opt/openssl/lib"
+      "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{HOMEBREW_PREFIX}/opt/openssl/lib",
+      "-j#{ENV.make_jobs}"
     ]
 
     # Debugging mode, unfortunately without debugging symbols
@@ -33,13 +34,9 @@ class Openresty < Formula
     end
 
     system "./configure", *args
-    system "make"
+    system "make", "-j#{ENV.make_jobs}"
     system "make install"
 
-    bin.install "#{prefix}/nginx/sbin/nginx"
-    bin.install "#{prefix}/bin/openresty"
-    bin.install "#{prefix}/bin/restydoc"
-    bin.install "#{prefix}/bin/resty"
-    bin.install "#{prefix}/bin/opm"
+    bin.install_symlink "#{prefix}/nginx/sbin/nginx"
   end
 end
