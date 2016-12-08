@@ -1,7 +1,7 @@
 class Luarocks < Formula
   homepage "https://luarocks.org"
-  url "https://luarocks.org/releases/luarocks-2.4.0.tar.gz"
-  sha256 "44381c9128d036247d428531291d1ff9405ae1daa238581d3c15f96d899497c3"
+  url "https://luarocks.org/releases/luarocks-2.4.2.tar.gz"
+  sha256 "0e1ec34583e1b265e0fbafb64c8bd348705ad403fe85967fd05d3a659f74d2e5"
   head "https://github.com/keplerproject/luarocks.git"
 
   depends_on "mashape/kong/openresty"
