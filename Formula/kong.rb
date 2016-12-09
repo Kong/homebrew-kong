@@ -23,7 +23,7 @@ class Kong < Formula
   conflicts_with "cassandra", :because => "Kong only supports Cassandra 2.1/2.2"
 
   def install
-    system "luarocks make OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
+    system "luarocks make OPENSSL_DIR=#{Formula['openssl'].opt_prefix} --local"
     bin.install "bin/kong"
   end
 end
