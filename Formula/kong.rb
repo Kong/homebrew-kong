@@ -7,7 +7,7 @@ class Kong < Formula
   end
 
   devel do
-    url "https://github.com/mashape/kong.git", :tag => "0.10.0rc3"
+    url "https://github.com/mashape/kong.git", :tag => "0.10.0rc4"
   end
 
   head do
