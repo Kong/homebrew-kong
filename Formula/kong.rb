@@ -15,7 +15,6 @@ class Kong < Formula
   end
 
   depends_on "openssl"
-  depends_on "dnsmasq"
   depends_on "serf"
   depends_on "mashape/kong/openresty"
   depends_on "mashape/kong/luarocks"
