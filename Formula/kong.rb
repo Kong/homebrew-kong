@@ -52,17 +52,16 @@ index 3311ce22..c144f46d 100755
  package.path = "?/init.lua;"..package.path
  
  require("kong.cmd.init")(arg)
-diff --git a/kong/kong.lua b/kong/kong.lua
-index 952f8427..66530bf9 100644
---- a/kong/kong.lua
-+++ b/kong/kong.lua
-@@ -24,6 +24,8 @@
- -- |[[    ]]|
- -- ==========
+diff --git a/kong/templates/nginx_kong.lua b/kong/templates/nginx_kong.lua
+index 536dad9a..66a59f85 100644
+--- a/kong/templates/nginx_kong.lua
++++ b/kong/templates/nginx_kong.lua
+@@ -45,6 +45,7 @@ lua_ssl_verify_depth ${{LUA_SSL_VERIFY_DEPTH}};
+ > end
  
-+require "luarocks.loader"
-+
- do
-   -- let's ensure the required shared dictionaries are
-   -- declared via lua_shared_dict in the Nginx conf
+ init_by_lua_block {
++    require "luarocks.loader"
+     require 'resty.core'
+     kong = require 'kong'
+     kong.init()
 
