@@ -16,7 +16,7 @@ class Luarocks < Formula
     # Install to the Cellar, but the tree to install modules is in HOMEBREW_PREFIX
     args = [
       "--prefix=#{prefix}",
-      "--rocks-tree=#{share}",
+      "--rocks-tree=#{prefix}",
       "--sysconfdir=#{prefix}/etc",
       "--with-lua=#{openresty.prefix}/luajit",
       "--with-lua-include=#{openresty.prefix}/luajit/include/luajit-2.1",
