@@ -16,7 +16,7 @@ class Luarocks < Formula
     # Install to the Cellar, but the tree to install modules is in HOMEBREW_PREFIX
     args = [
       "--prefix=#{prefix}",
-      "--rocks-tree=#{prefix}/system_tree",
+      "--rocks-tree=#{openresty.prefix}/luajit",
       "--sysconfdir=#{prefix}/etc",
       "--with-lua=#{openresty.prefix}/luajit",
       "--with-lua-include=#{openresty.prefix}/luajit/include/luajit-2.1",
@@ -29,7 +29,7 @@ class Luarocks < Formula
   end
 
   def caveats; <<-EOS.undent
-    Rocks will be installed to: #{HOMEBREW_PREFIX}/Cellar/#{name}/#{version}/system_tree
+    Rocks will be installed to: <OPENRESTY_PREFIX>/luajit
     EOS
   end
 
