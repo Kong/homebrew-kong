@@ -26,14 +26,11 @@ class Luarocks < Formula
     system "./configure", *args
     system "make build"
     system "make install"
+    system "#{bin}/luarocks install luarocks"
   end
 
   def caveats; <<-EOS.undent
     Rocks will be installed to: <OPENRESTY_PREFIX>/luajit
     EOS
-  end
-
-  test do
-    system "#{bin}/luarocks", "install", "say"
   end
 end
