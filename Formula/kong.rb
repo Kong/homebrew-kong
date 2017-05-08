@@ -22,7 +22,7 @@ class Kong < Formula
   patch :DATA
 
   def install
-    system "luarocks make OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
+    system "luarocks make OPENSSL_DIR=#{Formula['openssl'].opt_prefix} --local"
     bin.install "bin/kong"
   end
 end
