@@ -6,9 +6,9 @@ class Kong < Formula
     url "https://github.com/Mashape/kong.git", :tag => "0.10.3"
   end
 
-  #devel do
-  #  url "https://github.com/mashape/kong.git", :tag => "0.10.0rc4"
-  #end
+  devel do
+    url "https://github.com/mashape/kong.git", :tag => "0.11.0rc1"
+  end
 
   head do
     url "https://github.com/Mashape/kong.git", :branch => "next"
