@@ -6,10 +6,6 @@ class Luarocks < Formula
 
   depends_on "mashape/kong/openresty"
 
-  fails_with :llvm do
-    cause "Lua itself compiles with llvm, but may fail when other software tries to link."
-  end
-
   def install
     openresty = Formula["mashape/kong/openresty"]
 
