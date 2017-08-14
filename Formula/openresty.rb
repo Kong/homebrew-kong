@@ -2,8 +2,8 @@ class Openresty < Formula
   homepage "https://openresty.org/"
 
   stable do
-    url "https://openresty.org/download/openresty-1.11.2.2.tar.gz"
-    sha256 "7f9ca62cfa1e4aedf29df9169aed0395fd1b90de254139996e554367db4d5a01"
+    url "https://openresty.org/download/openresty-1.11.2.4.tar.gz"
+    sha256 "07679171450a6c083f983f6130056de3c4e13cc2d117dea68e1c6990e2e49ac9"
   end
 
   depends_on "pcre"
@@ -19,7 +19,6 @@ class Openresty < Formula
       "--with-http_ssl_module",
       "--with-http_realip_module",
       "--with-http_stub_status_module",
-      "--without-luajit-lua52",
       "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include,#{HOMEBREW_PREFIX}/opt/openssl/include",
       "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{HOMEBREW_PREFIX}/opt/openssl/lib",
       "-j#{ENV.make_jobs}"

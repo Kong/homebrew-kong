@@ -3,12 +3,13 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
 
   stable do
-    url "https://github.com/Mashape/kong.git", :tag => "0.10.3"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=kong-community-edition-0.11.0.tar.gz"
+    sha256 "50305f52075d96b5b7ab3a051611bf7f28d263d7d45e2004572d9d3ef0ef8141"
   end
 
-  devel do
-    url "https://github.com/Mashape/kong.git", :tag => "0.11.0rc2"
-  end
+  #devel do
+  #  url "https://github.com/Mashape/kong.git", :tag => "0.11.0rc2"
+  #end
 
   head do
     url "https://github.com/Mashape/kong.git", :branch => "next"
@@ -17,7 +18,6 @@ class Kong < Formula
   patch :DATA
 
   depends_on "openssl"
-  depends_on "serf"
   depends_on "mashape/kong/openresty"
   depends_on "mashape/kong/luarocks"
 
