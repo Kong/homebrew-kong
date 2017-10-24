@@ -3,8 +3,8 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=kong-community-edition-0.11.0.tar.gz"
-    sha256 "50305f52075d96b5b7ab3a051611bf7f28d263d7d45e2004572d9d3ef0ef8141"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.11.1.tar.gz"
+    sha256 "2e31a67761bbce57fe23822812906c2cc43a4af1838bc39843f21e94b413da8c"
   end
 
   #devel do
