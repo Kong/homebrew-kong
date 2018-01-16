@@ -22,7 +22,7 @@ class Kong < Formula
   depends_on "kong/kong/luarocks"
 
   def install
-    system "luarocks-5.1 --tree=#{prefix} make OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
+    system "luarocks-5.1 --tree=#{prefix} make CRYPTO_DIR=#{Formula['openssl'].opt_prefix} OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
     bin.install "bin/kong"
   end
 end
