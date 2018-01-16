@@ -8,18 +8,18 @@ class Kong < Formula
   end
 
   #devel do
-  #  url "https://github.com/Mashape/kong.git", :tag => "0.11.0rc2"
+  #  url "https://github.com/Kong/kong.git", :tag => "0.11.0rc2"
   #end
 
   head do
-    url "https://github.com/Mashape/kong.git", :branch => "next"
+    url "https://github.com/Kong/kong.git", :branch => "next"
   end
 
   patch :DATA
 
   depends_on "openssl"
-  depends_on "mashape/kong/openresty"
-  depends_on "mashape/kong/luarocks"
+  depends_on "kong/kong/openresty"
+  depends_on "kong/kong/luarocks"
 
   def install
     system "luarocks-5.1 --tree=#{prefix} make OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"

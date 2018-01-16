@@ -8,7 +8,7 @@ Homebrew tap for [Kong] :beer:
 ### Install (stable)
 
 ```shell
-$ brew tap mashape/kong
+$ brew tap kong/kong
 $ brew install kong
 ```
 
@@ -20,7 +20,7 @@ When a release candidate is available, it can be installed via this Formula's
 devel channel:
 
 ```
-$ brew tap mashape/kong
+$ brew tap kong/kong
 $ brew install --devel kong
 ```
 
@@ -30,7 +30,7 @@ HEAD points to Kong's `next` branch, the development branch for cutting edge
 installs:
 
 ```
-$ brew tap mashape/kong
+$ brew tap kong/kong
 $ brew install --HEAD kong
 ```
 

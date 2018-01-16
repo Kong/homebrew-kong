@@ -6,10 +6,10 @@ class Luarocks < Formula
 
   patch :DATA
 
-  depends_on "mashape/kong/openresty"
+  depends_on "kong/kong/openresty"
 
   def install
-    openresty = Formula["mashape/kong/openresty"]
+    openresty = Formula["kong/kong/openresty"]
 
     # Install to the Cellar, but the tree to install modules is in HOMEBREW_PREFIX/opt/kong
     args = [
