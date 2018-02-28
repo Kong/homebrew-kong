@@ -3,8 +3,8 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.12.1.tar.gz"
-    sha256 "19d87de16bd356c827581a8819ae4caf10f8bc56b4c8b8cb40d182c320334c71"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.12.2.tar.gz"
+    sha256 "21911dbaf5fe65867b83974f949aa866700cc748f7a898ddae774ab35c2b45ee"
   end
 
   #devel do
@@ -27,7 +27,7 @@ class Kong < Formula
   end
 end
 
-# patch Kong default `prefix` to `/usr/local/opt/kong` as `/usr/local/` 
+# patch Kong default `prefix` to `/usr/local/opt/kong` as `/usr/local/`
 # not writable by non root user on OSX
 __END__
 diff --git a/kong/templates/kong_defaults.lua b/kong/templates/kong_defaults.lua
