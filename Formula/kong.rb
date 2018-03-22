@@ -3,13 +3,13 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.12.3.tar.gz"
-    sha256 "81f08667d36c008d2b9040549f5138172cddb3988a212000679e6061a5c2a5b8"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.13.0.tar.gz"
+    sha256 "42e93897b40df1a2a0e581393da9fea441da30452ad0805790bc918691ee8c48"
   end
 
-  devel do
-    url "https://github.com/Kong/kong.git", :tag => "0.13.0rc2"
-  end
+  #devel do
+  # url "https://github.com/Kong/kong.git", :tag => "0.13.0rc2"
+  #end
 
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
