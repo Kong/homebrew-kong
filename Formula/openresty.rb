@@ -2,8 +2,8 @@ class Openresty < Formula
   homepage "https://openresty.org/"
 
   stable do
-    url "https://openresty.org/download/openresty-1.11.2.5.tar.gz"
-    sha256 "f8cc203e8c0fcd69676f65506a3417097fc445f57820aa8e92d7888d8ad657b9"
+    url "https://openresty.org/download/openresty-1.13.6.1.tar.gz"
+    sha256 "d1246e6cfa81098eea56fb88693e980d3e6b8752afae686fab271519b81d696b"
   end
 
   depends_on "pcre"
