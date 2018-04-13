@@ -9,7 +9,7 @@ Homebrew tap for [Kong] :beer:
 
 ```shell
 $ brew tap kong/kong
-$ brew install kong
+$ brew install kong/kong/kong
 ```
 
 ##### Options
