@@ -27,7 +27,7 @@ class Luarocks < Formula
     system "make install"
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Rocks will be installed to: #{HOMEBREW_PREFIX}/opt/kong
     EOS
   end
