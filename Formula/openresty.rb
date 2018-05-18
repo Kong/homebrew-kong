@@ -1,9 +1,15 @@
 class Openresty < Formula
   homepage "https://openresty.org/"
+  version = "1.13.6.1"
+  sha_sum = "d1246e6cfa81098eea56fb88693e980d3e6b8752afae686fab271519b81d696b"
 
   stable do
-    url "https://openresty.org/download/openresty-1.13.6.1.tar.gz"
-    sha256 "d1246e6cfa81098eea56fb88693e980d3e6b8752afae686fab271519b81d696b"
+    url "https://openresty.org/download/openresty-#{version}.tar.gz"
+    sha256 sha_sum
+
+    resource "openresty-patches" do
+      url "https://github.com/Kong/openresty-patches.git", :using => :git, :shallow => false
+    end
   end
 
   depends_on "pcre"
@@ -12,6 +18,12 @@ class Openresty < Formula
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   def install
+    resource("openresty-patches").stage do
+      Dir["#{pwd}/patches/#{version}/*.patch"].each do |f|
+        system "cd", buildpath/"bundle", "&&", "patch", "-p1", "<", f
+      end
+    end
+
     args = [
       "--prefix=#{prefix}",
       "--with-ipv6",
