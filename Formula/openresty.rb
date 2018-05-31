@@ -13,7 +13,7 @@ class Openresty < Formula
   end
 
   depends_on "pcre"
-  depends_on "openssl"
+  depends_on "openssl@1.1"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
