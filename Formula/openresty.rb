@@ -1,7 +1,7 @@
 class Openresty < Formula
   homepage "https://openresty.org/"
-  version = "1.13.6.1"
-  sha_sum = "d1246e6cfa81098eea56fb88693e980d3e6b8752afae686fab271519b81d696b"
+  version = "1.13.6.2"
+  sha_sum = "946e1958273032db43833982e2cec0766154a9b5cb8e67868944113208ff2942"
 
   stable do
     url "https://openresty.org/download/openresty-#{version}.tar.gz"
