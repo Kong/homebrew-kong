@@ -1,5 +1,5 @@
 class Kong < Formula
-  homepage "https://getkong.org"
+  homepage "https://docs.konghq.com"
   desc "Open source Microservices and API Gateway"
 
   stable do
