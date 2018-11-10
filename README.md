@@ -40,6 +40,6 @@ $ brew install --HEAD kong
 $ kong --help
 ```
 
-Get started by reading the documentation at: https://getkong.org/docs.
+Get started by reading the documentation at: https://docs.konghq.com
 
-[Kong]: https://getkong.org
+[Kong]: https://konghq.com
