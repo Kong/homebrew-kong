@@ -1,28 +1,34 @@
 class Kong < Formula
-  homepage "https://docs.konghq.com"
   desc "Open source Microservices and API Gateway"
+  homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-0.14.1.tar.gz"
-    sha256 "945a90568838ffb7ee89e6816576a26aae0e860b5ff0a4c396f4299062eb0001"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.0.0.tar.gz"
+    sha256 "34be0f85dfe0cd058ebfe37ae0168f516e6fe68bdfd4a3a113ac28c927efe33f"
   end
-
-  #devel do
-  # url "https://github.com/Kong/kong.git", :tag => "0.13.0rc2"
-  #end
 
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
   end
 
+  depends_on "kong/kong/luarocks"
+  depends_on "kong/kong/openresty"
+  depends_on "openssl@1.1"
+
   patch :DATA
 
-  depends_on "openssl"
-  depends_on "kong/kong/openresty"
-  depends_on "kong/kong/luarocks"
-
   def install
-    system "luarocks-5.1 --tree=#{prefix} make CRYPTO_DIR=#{Formula['openssl'].opt_prefix} OPENSSL_DIR=#{Formula['openssl'].opt_prefix}"
+    luarocks_prefix = Formula["kong/kong/luarocks"].prefix
+    openresty_prefix = Formula["kong/kong/openresty"].prefix
+    openssl_prefix = Formula["openssl@1.1"].prefix
+
+    system "#{luarocks_prefix}/bin/luarocks",
+           "--tree=#{prefix}",
+           "--lua-dir=#{openresty_prefix}/luajit",
+           "make",
+           "CRYPTO_DIR=#{openssl_prefix}",
+           "OPENSSL_DIR=#{openssl_prefix}"
+
     bin.install "bin/kong"
   end
 end
