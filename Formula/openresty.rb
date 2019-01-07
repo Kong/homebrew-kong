@@ -47,6 +47,7 @@ class Openresty < Formula
       "--with-http_stub_status_module",
       "--with-http_v2_module",
       "--with-stream_ssl_preread_module",
+      "--with-stream_realip_module",
       "--with-cc-opt=-I#{HOMEBREW_PREFIX}/include,#{openssl_prefix}/include,#{pcre_prefix}/include",
       "--with-ld-opt=-L#{HOMEBREW_PREFIX}/lib,#{openssl_prefix}/lib,#{pcre_prefix}/lib",
       "-j#{ENV.make_jobs}"
