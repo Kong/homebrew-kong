@@ -32,7 +32,7 @@ class Openresty < Formula
    pcre_prefix = Formula["pcre"].prefix
 
     resource("openresty-patches").stage do
-      Dir["#{pwd}/patches/#{version}/*.patch"].each do |f|
+      Dir["#{pwd}/patches/#{version}/*.patch"].sort.each do |f|
         cd buildpath/"bundle" do
           system "patch -p1 < #{f}"
         end
