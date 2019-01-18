@@ -4,7 +4,7 @@ class Kong < Formula
 
   stable do
     url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.0.2.tar.gz"
-    sha256 "3cf8338f9df36448ac47276c823f26f9be49e26340c8cf17f141af4ac7ef2504"
+    sha256 "7d0b84bb16743d5171f088ef0d7cb5a5cd08f22a9d69a3a42ffea23bb4932518"
   end
 
   head do
