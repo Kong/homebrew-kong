@@ -3,8 +3,8 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.0.2.tar.gz"
-    sha256 "7d0b84bb16743d5171f088ef0d7cb5a5cd08f22a9d69a3a42ffea23bb4932518"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.0.3.tar.gz"
+    sha256 "11cbc42d1c32e9cddd06cdf788589b6a515a62e26cf0c49fc63b76dac18322e7"
   end
 
   head do
