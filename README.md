@@ -37,7 +37,7 @@ $ brew install --HEAD kong
 ### Use Kong
 
 ```shell
-$ kong --help
+$ kong
 ```
 
 Get started by reading the documentation at: https://docs.konghq.com
