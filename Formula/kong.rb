@@ -13,6 +13,7 @@ class Kong < Formula
 
   depends_on "kong/kong/luarocks"
   depends_on "kong/kong/openresty"
+  depends_on "libyaml"
   depends_on "openssl@1.1"
 
   patch :DATA
