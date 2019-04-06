@@ -3,8 +3,8 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.1.0.tar.gz"
-    sha256 "21f48198e63e684581c112225ecc7a521ee36b2cb8b5c31d5c6faea93b7fe33d"
+    url "https://bintray.com/kong/kong-community-edition-src/download_file?file_path=dists%2Fkong-community-edition-1.1.1.tar.gz"
+    sha256 "3bb7b8950f4264b2ce63768b82bcf23f0e9d559a4a712663ff2780fce620477d"
   end
 
   head do
@@ -13,6 +13,7 @@ class Kong < Formula
 
   depends_on "kong/kong/luarocks"
   depends_on "kong/kong/openresty"
+  depends_on "libyaml"
   depends_on "openssl@1.1"
 
   patch :DATA
