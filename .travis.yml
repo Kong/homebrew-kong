@@ -1,0 +1,19 @@
+language: objective-c
+os: osx
+
+before_install:
+  - brew update >/dev/null
+
+# This is done to ensure that the formulas that kong.rb depends on
+# are picked up by the currently-tested branch.
+install:
+  - mkdir -p $(brew --repo)/Library/Taps/kong
+  - ln -s $PWD $(brew --repo)/Library/Taps/kong/homebrew-kong
+  - brew tap --repair
+
+script:
+  - brew audit ./Formula/*.rb
+  - brew install -v ./Formula/kong.rb
+  - kong config init
+  - KONG_DATABASE=off KONG_DECLARATIVE_CONFIG=kong.yml KONG_PREFIX=prefix kong start
+  - curl http://localhost:8001 | grep Welcome
