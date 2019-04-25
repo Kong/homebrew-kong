@@ -4,6 +4,21 @@ os: osx
 before_install:
   - brew update >/dev/null
 
+# From https://gist.github.com/maelvalais/068af21911c7debc4655cdaa41bbf092
+# (1) remember to use 'brew cleanup -s' at the end of the travis script;
+# otherwise, the $HOME/Library/Caches/Homebrew folder will be enormous
+# (~2GB for the 4 jobs). This is because this folder is already present on
+# osx images and it is big.
+# (2) For a time, I had removed $HOME/.cache/Homebrew (cache of Linuxbrew)
+# because it was also storing some logs in $HOME/.cache/Homebrew/Logs, making
+# the cache rebuilt every time.
+cache:
+  directories:
+    - "$HOME/.cache/pip"
+    - "$HOME/.gem/ruby"
+    - "$HOME/Library/Caches/Homebrew" # (1)
+    - "$HOME/.cache/Homebrew" # (2)
+
 # This is done to ensure that the formulas that kong.rb depends on
 # are picked up by the currently-tested branch.
 install:
@@ -17,3 +32,14 @@ script:
   - kong config init
   - KONG_DATABASE=off KONG_DECLARATIVE_CONFIG=kong.yml KONG_PREFIX=prefix kong start
   - curl http://localhost:8001 | grep Welcome
+
+# From https://gist.github.com/maelvalais/068af21911c7debc4655cdaa41bbf092
+before_cache:
+  # Scrub cache so that travis only caches stuff for installed formulae.
+  - brew cleanup -s
+  - brew cask cleanup
+  # Remove temporary stuff (idk why they put that in ~/.cache... that should be in /tmp)
+  - rm -f ~/Library/Caches/Homebrew/linkage.db ~/.cache/Homebrew/linkage.db
+  # List the formulae so that I understand why the cache is huge sometimes
+  - brew list
+  - du -h ~/Library/Caches/Homebrew || du -h ~/.cache/Homebrew/linkage.db
