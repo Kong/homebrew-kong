@@ -27,7 +27,6 @@ install:
   - brew tap --repair
 
 script:
-  - brew audit ./Formula/*.rb
   - brew install -v ./Formula/kong.rb
   - kong config init
   - KONG_DATABASE=off KONG_DECLARATIVE_CONFIG=kong.yml KONG_PREFIX=prefix kong start
