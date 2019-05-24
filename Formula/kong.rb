@@ -7,6 +7,10 @@ class Kong < Formula
     sha256 "e584886fdedfdfe53ae02a7aa3f90af58d424625fe2bbc535faf312e465a5cd4"
   end
 
+  devel do
+    url "https://github.com/Kong/kong.git", :tag => "1.2.0rc1"
+  end
+
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
   end
