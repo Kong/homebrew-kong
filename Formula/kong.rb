@@ -8,7 +8,7 @@ class Kong < Formula
   end
 
   devel do
-    url "https://github.com/Kong/kong.git", :tag => "1.2.0rc1"
+    url "https://github.com/Kong/kong.git", :tag => "1.2.0rc2"
   end
 
   head do
