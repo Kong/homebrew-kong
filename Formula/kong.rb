@@ -3,12 +3,8 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-1.1.2.tar.gz"
-    sha256 "e584886fdedfdfe53ae02a7aa3f90af58d424625fe2bbc535faf312e465a5cd4"
-  end
-
-  devel do
-    url "https://github.com/Kong/kong.git", :tag => "1.2.0rc2"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-1.2.0.tar.gz"
+    sha256 "52b5855d580b33016f6ddab74e5ae788b17ad39df36f8c9e079de22c1d9cf344"
   end
 
   head do
