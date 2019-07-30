@@ -1,7 +1,7 @@
-class Openresty < Formula
+class OpenrestyAT11362 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  version "1.15.8.1"
+  version "1.13.6.2"
   kong_ngx_build_version = "0.0.5"
   kong_ngx_build_sha_sum = "9ed2a6468ecfc976d8f3468ce6a138a05f375a2b65e858183f90d84f761bca34"
 
