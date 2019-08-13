@@ -17,6 +17,7 @@ class OpenrestyAT11362 < Formula
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
+  depends_on "pcre"
   depends_on "coreutils"
   conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
