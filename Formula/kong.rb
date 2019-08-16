@@ -9,7 +9,7 @@ class Kong < Formula
   end
 
   devel do
-    url "https://github.com/Kong/kong.git", :tag => "1.3.0rc1"
+    url "https://github.com/Kong/kong.git", :tag => "1.3.0rc2"
     depends_on "kong/kong/openresty@1.15.8.1"
   end
 
