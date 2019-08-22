@@ -3,13 +3,8 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-1.2.2.tar.gz"
-    sha256 "0d744662ad8b28274b87d6c81fe4ec69a7062344c76219a7a15e306dc1a5f0c7"
-    depends_on "kong/kong/openresty@1.13.6.2"
-  end
-
-  devel do
-    url "https://github.com/Kong/kong.git", :tag => "1.3.0rc2"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-1.3.0.tar.gz"
+    sha256 "9ca1b9ae2717b0bbd67da33917125bd05f2d58a2bb3451019401962c52a4e612"
     depends_on "kong/kong/openresty@1.15.8.1"
   end
 
@@ -23,11 +18,7 @@ class Kong < Formula
   patch :DATA
 
   def install
-    openresty_prefix = Formula["kong/kong/openresty@1.13.6.2"].prefix
-
-    if build.head? or build.devel? then
-      openresty_prefix = Formula["kong/kong/openresty@1.15.8.1"].prefix
-    end
+    openresty_prefix = Formula["kong/kong/openresty@1.15.8.1"].prefix
 
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
