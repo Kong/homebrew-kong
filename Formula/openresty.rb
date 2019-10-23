@@ -1,9 +1,9 @@
 class Openresty < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  version "1.15.8.1"
-  kong_ngx_build_version = "0.0.5"
-  kong_ngx_build_sha_sum = "9ed2a6468ecfc976d8f3468ce6a138a05f375a2b65e858183f90d84f761bca34"
+  version "1.15.8.2"
+  kong_ngx_build_version = "0.0.8"
+  kong_ngx_build_sha_sum = "0320ddf31b93141f050c1cb3e0bb9ff03f4dbfd5e52433cd0ac2d60e25642cc0"
 
   stable do
     url "https://raw.githubusercontent.com/Kong/openresty-build-tools/#{kong_ngx_build_version}/kong-ngx-build"
@@ -27,8 +27,8 @@ class Openresty < Formula
     args = [
       "--prefix #{prefix}",
       "--openresty #{version}",
-      "--openssl 1.1.1c",
-      "--luarocks 3.1.3",
+      "--openssl 1.1.1d",
+      "--luarocks 3.2.1",
       "-j #{ENV.make_jobs}"
     ]
 
