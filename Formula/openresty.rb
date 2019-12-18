@@ -24,6 +24,14 @@ class Openresty < Formula
   def install
     chmod 0755, "#{pwd}/kong-ngx-build"
 
+    # LuaJIT build is crashing in macOS Catalina. The defaults
+    # for stack checks changed (they are on by default when the
+    # target is 10.15). An existing issue in Clang will generate
+    # code that crashes under some circumstances if stack checks
+    # are enabled.
+    # https://forums.developer.apple.com/thread/121887
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     args = [
       "--prefix #{prefix}",
       "--openresty #{version}",

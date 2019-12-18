@@ -18,6 +18,15 @@ class OpenrestyAT11362 < Formula
   conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
   def install
+
+    # LuaJIT build is crashing in macOS Catalina. The defaults
+    # for stack checks changed (they are on by default when the
+    # target is 10.15). An existing issue in Clang will generate
+    # code that crashes under some circumstances if stack checks
+    # are enabled.
+    # https://forums.developer.apple.com/thread/121887
+    ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
+
     args = [
       "--prefix #{prefix}",
       "--openresty #{version}",
