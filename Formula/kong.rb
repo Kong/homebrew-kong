@@ -2,6 +2,10 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
+  devel do
+    url "https://github.com/Kong/kong.git", :tag => "2.0.0rc1"
+  end
+
   stable do
     url "https://bintray.com/kong/kong-src/download_file?file_path=kong-1.4.2.tar.gz"
     sha256 "5ab32ef13d219dcdcd89485322ed11c7f087b6c61d6a803a791b2695410e102b"
