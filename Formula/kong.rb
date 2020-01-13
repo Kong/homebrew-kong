@@ -3,7 +3,7 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   devel do
-    url "https://github.com/Kong/kong.git", :tag => "2.0.0rc1"
+    url "https://github.com/Kong/kong.git", :tag => "2.0.0rc2"
   end
 
   stable do
