@@ -3,8 +3,8 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.0.0.tar.gz"
-    sha256 "5dfba5879d8ee490acc21fde06686f579dfbc22352b6982eef7b7a28c156fa26"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.0.1.tar.gz"
+    sha256 "e654006233c0f6aef25f881980697677f5644fd504fac85dfdfe558c79f1692c"
     depends_on "kong/kong/openresty@1.15.8.2"
   end
 
