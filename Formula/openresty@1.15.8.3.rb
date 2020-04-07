@@ -1,4 +1,4 @@
-class Openresty < Formula
+class OpenrestyAT11583 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
   version "1.15.8.3"
@@ -13,7 +13,8 @@ class Openresty < Formula
 
   # brew install --HEAD kong/kong/openresty
   head do
-    url "https://github.com/Kong/kong-build-tools/archive/master.zip"
+    url "https://github.com/Kong/
+/archive/master.zip"
     # No sha, since master is expected to change more frequently than this formula.
     # Will generate a warning about missing SHA while installing. That is expected and ok.
   end
@@ -43,8 +44,8 @@ class Openresty < Formula
     args = [
       "--prefix #{prefix}",
       "--openresty #{openresty_version}",
-      "--openssl 1.1.1d",
-      "--luarocks 3.2.1",
+      "--openssl 1.1.1f",
+      "--luarocks 3.3.1",
       "-j #{ENV.make_jobs}"
     ]
 
