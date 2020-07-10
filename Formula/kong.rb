@@ -8,6 +8,10 @@ class Kong < Formula
     depends_on "kong/kong/openresty@1.15.8.3"
   end
 
+  devel do
+    url "https://github.com/Kong/kong.git", :tag => "2.1.0-rc.1"
+  end
+
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
     depends_on "kong/kong/openresty@1.15.8.3"
