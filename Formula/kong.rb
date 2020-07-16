@@ -3,14 +3,14 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.0.5.tar.gz"
-    sha256 "0cd6d635cdf6e25995fd0f5fe57eda5ffebebbb313c42d859fb0ee996565057c"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.1.0.tar.gz"
+    sha256 "8e7ceae26a2755225e085f4b95a6972778d339dd877d3d2165a672117e6caf69"
     depends_on "kong/kong/openresty@1.15.8.3"
   end
 
-  devel do
-    url "https://github.com/Kong/kong.git", :tag => "2.1.0-rc.1"
-  end
+  #devel do
+  #  url "https://github.com/Kong/kong.git", :tag => "2.1.0-rc.1"
+  #end
 
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
