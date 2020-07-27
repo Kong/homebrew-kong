@@ -2,8 +2,8 @@ class OpenrestyAT11583 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
   version "1.15.8.3"
-  kong_build_tools_version = "4.2.2"
-  kong_build_tools_sha_sum = "fd4506edb39918ff615f736abbed1b42d3dfe00c3c867b9b06de73e2121e9ad6"
+  kong_build_tools_version = "4.8.1"
+  kong_build_tools_sha_sum = "022387f06f351599ea34342486254dfd57fc682169de236d9bb04fc1e4add610"
 
   # brew install kong/kong/openresty
   stable do
