@@ -1,31 +1,21 @@
 class Openresty < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  version "1.15.8.3"
-  kong_build_tools_version = "4.2.2"
-  kong_build_tools_sha_sum = "fd4506edb39918ff615f736abbed1b42d3dfe00c3c867b9b06de73e2121e9ad6"
-
-  # brew install kong/kong/openresty
-  stable do
-    url "https://github.com/Kong/kong-build-tools/archive/#{kong_build_tools_version}.zip"
-    sha256 kong_build_tools_sha_sum
-  end
-
-  # brew install --HEAD kong/kong/openresty
-  head do
-    url "https://github.com/Kong/kong-build-tools/archive/master.zip"
-    # No sha, since master is expected to change more frequently than this formula.
-    # Will generate a warning about missing SHA while installing. That is expected and ok.
-  end
+  kong_build_tools_version = "4.8.0"
+  
+  url "https://github.com/Kong/kong-build-tools/archive/#{kong_build_tools_version}.zip"
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
-  depends_on "pcre"
   depends_on "coreutils"
   conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
   def install
-
+    openresty_version = "1.15.8.3"
+    openssl_version = "1.1.1g"
+    luarocks_version = "3.3.1"
+    pcre_version = "8.44"
+    
     # LuaJIT build is crashing in macOS Catalina. The defaults
     # for stack checks changed (they are on by default when the
     # target is 10.15). An existing issue in Clang will generate
@@ -34,17 +24,12 @@ class Openresty < Formula
     # https://forums.developer.apple.com/thread/121887
     ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
 
-    # When using `brew install --HEAD ...` the version attribute
-    # contains "HEAD", which is not understood by kong-ngx-build.
-    # So detect that case and use the version set at the top
-    # of this file (e.g. "1.15.8.2")
-    openresty_version = version.head? ? self.class.version : version
-
     args = [
       "--prefix #{prefix}",
       "--openresty #{openresty_version}",
-      "--openssl 1.1.1d",
-      "--luarocks 3.2.1",
+      "--openssl #{openssl_version}",
+      "--luarocks #{luarocks_version}",
+      "--pcre #{pcre_version}",
       "-j #{ENV.make_jobs}"
     ]
 
