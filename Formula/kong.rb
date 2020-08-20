@@ -11,7 +11,7 @@ class Kong < Formula
     url "https://github.com/Kong/kong.git", :branch => "next"
   end
 
-  depends_on "kong/kong/openresty"
+  depends_on "kong/kong/openresty@1.15.8.3"
 
   patch :DATA
 
