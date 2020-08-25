@@ -1,17 +1,17 @@
 class OpenrestyAT11583 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  kong_build_tools_version = "4.8.1"
-  kong_build_tools_sha_sum = "022387f06f351599ea34342486254dfd57fc682169de236d9bb04fc1e4add610"
-  openresty_version = "1.15.8.3"
-  openssl_version = "1.1.1g"
-  luarocks_version = "3.3.1"
-  pcre_version = "8.44"
+  KONG_BUILD_TOOLS_VERSION = "4.8.1"
+  KONG_BUILD_TOOLS_SHA_SUM = "022387f06f351599ea34342486254dfd57fc682169de236d9bb04fc1e4add610"
+  OPENRESTY_VERSION = "1.15.8.3"
+  OPENSSL_VERSION = "1.1.1g"
+  LUAROCKS_VERSION = "3.3.1"
+  PCRE_VERSION = "8.44"
 
-  version openresty_version
+  version OPENRESTY_VERSION
 
-  url "https://github.com/Kong/kong-build-tools/archive/#{kong_build_tools_version}.zip"
-  sha256 kong_build_tools_sha_sum
+  url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.zip"
+  sha256 KONG_BUILD_TOOLS_SHA_SUM
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
@@ -19,7 +19,6 @@ class OpenrestyAT11583 < Formula
   conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
   def install
-
     # LuaJIT build is crashing in macOS Catalina. The defaults
     # for stack checks changed (they are on by default when the
     # target is 10.15). An existing issue in Clang will generate
@@ -30,10 +29,10 @@ class OpenrestyAT11583 < Formula
 
     args = [
       "--prefix #{prefix}",
-      "--openresty #{openresty_version}",
-      "--openssl #{openssl_version}",
-      "--luarocks #{luarocks_version}",
-      "--pcre #{pcre_version}",
+      "--openresty #{OPENRESTY_VERSION}",
+      "--openssl #{OPENSSL_VERSION}",
+      "--luarocks #{LUAROCKS_VERSION}",
+      "--pcre #{PCRE_VERSION}",
       "-j #{ENV.make_jobs}"
     ]
 
