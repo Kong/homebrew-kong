@@ -1,4 +1,4 @@
-class Openresty < Formula
+class OpenrestyAT11583 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
   kong_build_tools_version = "4.8.0"
