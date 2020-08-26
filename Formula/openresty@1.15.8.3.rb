@@ -1,32 +1,24 @@
 class OpenrestyAT11583 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  version "1.15.8.3"
-  kong_build_tools_version = "4.8.1"
-  kong_build_tools_sha_sum = "022387f06f351599ea34342486254dfd57fc682169de236d9bb04fc1e4add610"
+  KONG_BUILD_TOOLS_VERSION = "4.8.1"
+  KONG_BUILD_TOOLS_SHA_SUM = "022387f06f351599ea34342486254dfd57fc682169de236d9bb04fc1e4add610"
+  OPENRESTY_VERSION = "1.15.8.3"
+  OPENSSL_VERSION = "1.1.1g"
+  LUAROCKS_VERSION = "3.3.1"
+  PCRE_VERSION = "8.44"
 
-  # brew install kong/kong/openresty
-  stable do
-    url "https://github.com/Kong/kong-build-tools/archive/#{kong_build_tools_version}.zip"
-    sha256 kong_build_tools_sha_sum
-  end
+  version OPENRESTY_VERSION
 
-  # brew install --HEAD kong/kong/openresty
-  head do
-    url "https://github.com/Kong/
-/archive/master.zip"
-    # No sha, since master is expected to change more frequently than this formula.
-    # Will generate a warning about missing SHA while installing. That is expected and ok.
-  end
+  url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.zip"
+  sha256 KONG_BUILD_TOOLS_SHA_SUM
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
-  depends_on "pcre"
   depends_on "coreutils"
   conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
   def install
-
     # LuaJIT build is crashing in macOS Catalina. The defaults
     # for stack checks changed (they are on by default when the
     # target is 10.15). An existing issue in Clang will generate
@@ -35,17 +27,12 @@ class OpenrestyAT11583 < Formula
     # https://forums.developer.apple.com/thread/121887
     ENV.append_to_cflags "-fno-stack-check" if DevelopmentTools.clang_build_version >= 1010
 
-    # When using `brew install --HEAD ...` the version attribute
-    # contains "HEAD", which is not understood by kong-ngx-build.
-    # So detect that case and use the version set at the top
-    # of this file (e.g. "1.15.8.2")
-    openresty_version = version.head? ? self.class.version : version
-
     args = [
       "--prefix #{prefix}",
-      "--openresty #{openresty_version}",
-      "--openssl 1.1.1f",
-      "--luarocks 3.3.1",
+      "--openresty #{OPENRESTY_VERSION}",
+      "--openssl #{OPENSSL_VERSION}",
+      "--luarocks #{LUAROCKS_VERSION}",
+      "--pcre #{PCRE_VERSION}",
       "-j #{ENV.make_jobs}"
     ]
 

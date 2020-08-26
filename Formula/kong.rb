@@ -2,10 +2,11 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
+  KONG_OPENRESTY_VERSION = "1.15.8.3"
+
   stable do
     url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.1.3.tar.gz"
     sha256 "c5fecaa31da54ff7b8e7e837dfcfaea2a599d2ccf6ff31552a5a0b254ad630fc"
-    depends_on "kong/kong/openresty@1.15.8.3"
   end
 
   #devel do
@@ -14,15 +15,15 @@ class Kong < Formula
 
   head do
     url "https://github.com/Kong/kong.git", :branch => "next"
-    depends_on "kong/kong/openresty@1.15.8.3"
   end
 
   depends_on "libyaml"
+  depends_on "kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"
 
   patch :DATA
 
   def install
-    openresty_prefix = Formula["kong/kong/openresty@1.15.8.3"].prefix
+    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
 
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
