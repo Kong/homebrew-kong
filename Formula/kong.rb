@@ -5,8 +5,8 @@ class Kong < Formula
   KONG_OPENRESTY_VERSION = "1.15.8.3"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.1.3.tar.gz"
-    sha256 "c5fecaa31da54ff7b8e7e837dfcfaea2a599d2ccf6ff31552a5a0b254ad630fc"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.1.4.tar.gz"
+    sha256 "40356072e7af259ba95edcd15f43b427384f151baedb257fe2aac8669ac1d60d"
   end
 
   #devel do
