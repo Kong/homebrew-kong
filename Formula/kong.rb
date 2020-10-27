@@ -2,11 +2,11 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
-  KONG_OPENRESTY_VERSION = "1.15.8.3"
+  KONG_OPENRESTY_VERSION = "1.17.8.2"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.1.4.tar.gz"
-    sha256 "40356072e7af259ba95edcd15f43b427384f151baedb257fe2aac8669ac1d60d"
+    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.2.0.tar.gz"
+    sha256 "bf3006018117e66df3bb6b303a80439b1c2528dc36d2edeb6c032e7e60c5736e"
   end
 
   #devel do
