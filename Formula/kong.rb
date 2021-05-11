@@ -3,9 +3,10 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   KONG_OPENRESTY_VERSION = "1.19.3.1"
+  KONG_VERSION = "2.4.0"
 
   stable do
-    url "https://bintray.com/kong/kong-src/download_file?file_path=kong-2.4.0.tar.gz"
+    url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
     sha256 "abf814e04c7fe750a55a24a3b89e17a0c449a36a72c75792e323f1e364cbce13"
   end
 
