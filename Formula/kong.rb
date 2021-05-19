@@ -11,7 +11,7 @@ class Kong < Formula
   end
 
   head do
-    url "https://github.com/Kong/kong.git", :branch => "next"
+    url "https://github.com/Kong/kong.git", :branch => "master"
   end
 
   depends_on "libyaml"
