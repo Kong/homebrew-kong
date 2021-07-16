@@ -3,7 +3,7 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   KONG_OPENRESTY_VERSION = "1.19.3.1"
-  KONG_VERSION = "2.4.1"
+  KONG_VERSION = "2.5.0"
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
