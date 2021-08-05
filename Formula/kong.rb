@@ -2,7 +2,7 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
-  KONG_OPENRESTY_VERSION = "1.19.3.1"
+  KONG_OPENRESTY_VERSION = "1.19.3.2"
   KONG_VERSION = "2.5.0"
 
   stable do
