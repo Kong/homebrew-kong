@@ -25,6 +25,9 @@ class Kong < Formula
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
 
+    ENV["YAML_LIBDIR"] = Formula["libyaml"].opt_lib
+    ENV["YAML_INCDIR"] = Formula["libyaml"].opt_include
+
     system "#{luarocks_prefix}/bin/luarocks",
            "--tree=#{prefix}",
            "make",
