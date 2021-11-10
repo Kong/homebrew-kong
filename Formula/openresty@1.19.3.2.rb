@@ -1,8 +1,8 @@
 class OpenrestyAT11932 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  KONG_BUILD_TOOLS_VERSION = "4.20.0"
-  KONG_BUILD_TOOLS_SHA_SUM = "93fe1dc4881ef516c01182b5d06dfbdd63c4a75a9a26d51d10d5f790d4fd126d"
+  KONG_BUILD_TOOLS_VERSION = "4.22.0"
+  KONG_BUILD_TOOLS_SHA_SUM = "22e70c76124e468731144850daf3078069c54e9079084e1730c24f62dbcf7520"
   OPENRESTY_VERSION = "1.19.3.2"
   OPENSSL_VERSION = "1.1.1k"
   LUAROCKS_VERSION = "3.5.0"
