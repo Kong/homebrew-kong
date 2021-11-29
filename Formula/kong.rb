@@ -43,8 +43,21 @@ end
 # patch Kong default `prefix` to `/usr/local/opt/kong` as `/usr/local/`
 # not writable by non root user on OSX
 __END__
+diff --git a/bin/kong b/bin/kong
+index 3e0ecf97d..b03e18a23 100755
+--- a/bin/kong
++++ b/bin/kong
+@@ -4,6 +4,7 @@ setmetatable(_G, nil)
+ 
+ pcall(require, "luarocks.loader")
+ 
+-package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. package.path
++package.cpath = (os.getenv("KONG_LUA_CPATH_OVERRIDE") or "") .. "/opt/homebrew/lib/lua/5.1/?.so;" .. package.cpath
++package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. "/opt/homebrew/share/lua/5.1/?.lua;/opt/homebrew/share/lua/5.1/?/init.lua;" .. package.path
+ 
+ require("kong.cmd.init")(arg)
 diff --git a/kong/templates/kong_defaults.lua b/kong/templates/kong_defaults.lua
-index e38b475..7a74a2f 100644
+index 5937dad10..54f607ab0 100644
 --- a/kong/templates/kong_defaults.lua
 +++ b/kong/templates/kong_defaults.lua
 @@ -1,5 +1,5 @@
