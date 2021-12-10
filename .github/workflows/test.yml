@@ -31,6 +31,8 @@ jobs:
           ln -s $PWD $(brew --repo)/Library/Taps/kong/homebrew-kong
           brew tap --repair
 
+      - uses: r7kamura/rubocop-problem-matchers-action@v1
+
       - name: Brew Style
         run: brew style ./Formula/kong.rb
 
