@@ -1,0 +1,43 @@
+---
+name: Test Kong Formula
+on:
+  - push
+  - workflow_dispatch
+jobs:
+  build:
+    runs-on: macos-11
+    steps:
+      # - uses: actions/checkout@v2
+
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Cache Homebrew Bundler RubyGems
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+
+      - name: Install Homebrew Bundler RubyGems
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: brew install-bundler-gems
+
+      - name: Configure Kong Tap
+        run: |
+          set -x
+          set -eu
+
+          mkdir -p $(brew --repo)/Library/Taps/kong
+          ln -s $PWD $(brew --repo)/Library/Taps/kong/homebrew-kong
+          brew tap --repair
+
+      - name: Install Kong Formula
+        run: |
+          set -x
+          set -eu
+
+          brew install -v ./Formula/kong.rb
+
