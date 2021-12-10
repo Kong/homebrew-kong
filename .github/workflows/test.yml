@@ -27,17 +27,20 @@ jobs:
 
       - name: Configure Kong Tap
         run: |
-          set -x
-          set -eu
-
           mkdir -p $(brew --repo)/Library/Taps/kong
           ln -s $PWD $(brew --repo)/Library/Taps/kong/homebrew-kong
           brew tap --repair
 
-      - name: Install Kong Formula
-        run: |
-          set -x
-          set -eu
+      - name: Brew Style
+        run: brew style ./Formula/kong.rb
 
-          brew install -v ./Formula/kong.rb
+      - name: Brew Audit
+        run: brew audit --online ./Formula/kong.rb
+
+      # - name: Install Kong Formula
+      #   run: |
+      #     set -x
+      #     set -eu
+
+      #     brew install -v ./Formula/kong.rb
 
