@@ -64,7 +64,7 @@ jobs:
           brew tap-info -v -d ${{ github.repository_owner }}/kong
 
           for formula in ${{ steps.changes.outputs.formulae }}; do
-            brew info -v -d "${{ github.repository_owner }}/${formula}"
+            brew info -v -d "${{ github.repository_owner }}/kong/${formula}"
           done
 
       - name: Brew Style
@@ -72,13 +72,15 @@ jobs:
         if: steps.changes.outputs.formulae != 0
         run: |
           echo "::add-matcher::.github/matchers/style.json"
-          brew style ${{ github.repository_owner }}/kong/${{ steps.changes.outputs.formulae }}
+          brew style \
+            ${{ github.repository_owner }}/kong/${{ steps.changes.outputs.formulae }}
 
       - name: Brew Audit
         if: steps.changes.outputs.formulae != 0
         run: |
           echo "::add-matcher::.github/matchers/style.json"
-          brew audit ${{ steps.changes.outputs.formulae }}
+          brew audit --online \
+            ${{ github.repository_owner }}/kong/${{ steps.changes.outputs.formulae }}
 
       - name: Brew Install Kong
         if: contains(steps.changes.outputs.formulae, 'kong')

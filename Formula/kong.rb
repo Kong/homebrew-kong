@@ -2,8 +2,8 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
-  KONG_OPENRESTY_VERSION = "1.19.3.2"
-  KONG_VERSION = "2.6.0"
+  KONG_OPENRESTY_VERSION = "1.19.3.2".freeze
+  KONG_VERSION = "2.6.0".freeze
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
@@ -11,7 +11,7 @@ class Kong < Formula
   end
 
   head do
-    url "https://github.com/Kong/kong.git", :branch => "master"
+    url "https://github.com/Kong/kong.git", branch: "master"
   end
 
   depends_on "libyaml"
