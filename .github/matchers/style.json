@@ -1,0 +1,30 @@
+{
+  "problemMatcher": [
+    {
+      "owner": "style-error",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "^(.+):(\\d+):(\\d+): (?:C|E): (.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      ]
+    },
+    {
+      "owner": "style-warning",
+      "severity": "warning",
+      "pattern": [
+        {
+          "regexp": "^(.+):(\\d+):(\\d+): W: (.+)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "message": 4
+        }
+      ]
+    }
+  ]
+}

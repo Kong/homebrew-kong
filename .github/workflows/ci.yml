@@ -1,0 +1,95 @@
+---
+name: CI
+on:
+  push:
+    paths:
+      - "Formula/*.rb"
+    branches:
+      - master
+
+  pull_request:
+    paths:
+      - "Formula/*.rb"
+    branches:
+      - master
+
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  test:
+    name: Test Formulae
+    runs-on: macos-11
+    steps:
+
+      # https://github.com/Homebrew/actions/tree/master/setup-homebrew
+      #
+      # this action handles checkout of the repo
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: Get Changed Formulae
+        id: changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "::set-output name=formulae::$(
+            # extract formula name from file for changed files
+            echo '${{ steps.files.outputs.added_modified }}' \
+              | tr ' ' '\n' \
+              | sed -ne 's^Formula/\(.*\)\.rb^\1^gp'
+          )"
+
+      - name: Cache Homebrew Bundler RubyGems
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.set-up-homebrew.outputs.gems-path }}
+          key: rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: rubygems-
+
+      - name: Install Homebrew Bundler RubyGems
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: brew install-bundler-gems
+
+      - name: Setup Tap
+        run: |
+          mkdir -p $(brew --repo)/Library/Taps/${{ github.repository_owner }}
+          ln -s $PWD $(brew --repo)/Library/Taps/${{ github.repository_owner }}/homebrew-kong
+
+          brew tap-info -v -d ${{ github.repository_owner }}/kong
+
+          for formula in ${{ steps.changes.outputs.formulae }}; do
+            brew info -v -d "${{ github.repository_owner }}/${formula}"
+          done
+
+      - name: Brew Style
+        # "Note: empty string returns 0" ~actions expressions docs
+        if: steps.changes.outputs.formulae != 0
+        run: |
+          echo "::add-matcher::.github/matchers/style.json"
+          brew style ${{ github.repository_owner }}/kong/${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Audit
+        if: steps.changes.outputs.formulae != 0
+        run: |
+          echo "::add-matcher::.github/matchers/style.json"
+          brew audit ${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Install Kong
+        if: contains(steps.changes.outputs.formulae, 'kong')
+        run: |
+          brew install -v ${{ github.repository_owner }}/kong
+
+          kong config init
+
+          KONG_DATABASE=off \
+          KONG_DECLARATIVE_CONFIG=kong.yml \
+          KONG_PREFIX=prefix \
+            kong start
+
+          curl http://localhost:8001 | grep Welcome
