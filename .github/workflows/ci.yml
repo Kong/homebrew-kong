@@ -1,0 +1,118 @@
+---
+name: CI
+on:
+  push:
+    paths:
+      - "Formula/*.rb"
+    branches:
+      - master
+
+  pull_request:
+    paths:
+      - "Formula/*.rb"
+    branches:
+      - master
+
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  test:
+    name: Test Formulae
+    runs-on: macos-11
+    steps:
+
+      # https://github.com/Homebrew/actions/tree/master/setup-homebrew
+      #
+      # this action handles checkout of the repo
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: true
+
+      - name: Setup Tap
+        run: |
+          mkdir -p $(brew --repo)/Library/Taps/kong
+          ln -s $PWD $(brew --repo)/Library/Taps/kong/homebrew-kong
+
+      - name: Cache Homebrew Bundler RubyGems & Downloads
+        id: cache
+        uses: actions/cache@v1
+        with:
+          path: |
+            ${{ steps.set-up-homebrew.outputs.gems-path }}
+            /usr/local/Homebrew/Library/Caches/Homebrew/downloads
+          key: ${{ runner.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
+          restore-keys: ${{ runner.os }}-rubygems-
+
+      - name: Install Homebrew Bundler RubyGems & Downloads
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          brew install-bundler-gems
+
+          # use brew tap-info to prime cache of formulae deps
+          brew tap-info -v -d kong/kong --json \
+            | jq -r '.[].formula_names[]' \
+            | xargs brew fetch --deps
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: Get Changed Formulae
+        id: changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "::set-output name=formulae::$(
+            # extract formula name from file for changed files
+            echo '${{ steps.files.outputs.added_modified }}' \
+              | tr ' ' '\n' \
+              | sed -ne 's^Formula/\(.*\)\.rb^\1^gp'
+          )"
+
+      - name: Brew Style (Kong)
+        if: contains(steps.changes.outputs.formulae, 'kong') == true
+        run: |
+          echo "::add-matcher::.github/matcher.json"
+          brew style \
+            --except-cops FormulaAudit/DependencyOrder \
+            kong/kong/${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Style (Non-Kong)
+        if: contains(steps.changes.outputs.formulae, 'kong') == false
+        run: |
+          echo "::add-matcher::.github/matcher.json"
+          brew style \
+            kong/kong/${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Audit (Kong)
+        if: contains(steps.changes.outputs.formulae, 'kong') == true
+        run: |
+          echo "::add-matcher::.github/matcher.json"
+          brew audit \
+            --online \
+            --except-cops FormulaAudit/DependencyOrder \
+            kong/kong/${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Audit (Non-Kong)
+        if: contains(steps.changes.outputs.formulae, 'kong') == false
+        run: |
+          echo "::add-matcher::.github/matcher.json"
+          brew audit \
+            --online \
+            kong/kong/${{ steps.changes.outputs.formulae }}
+
+      - name: Brew Install Kong
+        if: contains(steps.changes.outputs.formulae, 'kong')
+        run: |
+          brew install -v kong/kong/kong
+
+          kong config init
+
+          KONG_DATABASE=off \
+          KONG_DECLARATIVE_CONFIG=kong.yml \
+          KONG_PREFIX=prefix \
+            kong start
+
+          curl http://localhost:8001 | grep Welcome
