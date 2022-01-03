@@ -2,8 +2,8 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
-  KONG_OPENRESTY_VERSION = "1.19.3.2"
-  KONG_VERSION = "2.7.0"
+  KONG_OPENRESTY_VERSION = "1.19.3.2".freeze
+  KONG_VERSION = "2.7.0".freeze
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
@@ -11,10 +11,11 @@ class Kong < Formula
   end
 
   head do
-    url "https://github.com/Kong/kong.git", :branch => "master"
+    url "https://github.com/Kong/kong.git", branch: "master"
   end
 
   depends_on "libyaml"
+  depends_on "coreutils"
   depends_on "kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"
 
   patch :DATA
@@ -24,6 +25,11 @@ class Kong < Formula
 
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
+
+    bin.install_symlink "#{openresty_prefix}/openresty/nginx/sbin/nginx"
+    bin.install_symlink "#{openresty_prefix}/openresty/bin/openresty"
+    bin.install_symlink "#{openresty_prefix}/openresty/bin/resty"
+    bin.install_symlink "#{luarocks_prefix}/bin/luarocks"
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
@@ -37,6 +43,13 @@ class Kong < Formula
            "YAML_INCDIR=#{yaml_incdir}"
 
     bin.install "bin/kong"
+  end
+
+  test do
+    tempfile = `gmktemp --dry-run`
+    system "#{bin}/kong version -vv 2>&1 | grep 'Kong:'"
+    system "kong", "config", "init", tempfile
+    system "kong", "check", tempfile
   end
 end
 

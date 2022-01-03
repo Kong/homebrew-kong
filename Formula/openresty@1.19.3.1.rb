@@ -1,22 +1,22 @@
 class OpenrestyAT11931 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  KONG_BUILD_TOOLS_VERSION = "4.17.0"
-  KONG_BUILD_TOOLS_SHA_SUM = "5a3d6f0c6e65c97c9a12cbe3eb0380b87f465e83d95f997acab97e15c5a4648b"
-  OPENRESTY_VERSION = "1.19.3.1"
-  OPENSSL_VERSION = "1.1.1k"
-  LUAROCKS_VERSION = "3.5.0"
-  PCRE_VERSION = "8.44"
+  KONG_BUILD_TOOLS_VERSION = "4.17.0".freeze
+  KONG_BUILD_TOOLS_SHA_SUM = "623afe50656f938087974448b80c9583980cba3463a4ab653b04149c3c352155".freeze
+  OPENRESTY_VERSION = "1.19.3.1".freeze
+  OPENSSL_VERSION = "1.1.1k".freeze
+  LUAROCKS_VERSION = "3.5.0".freeze
+  PCRE_VERSION = "8.44".freeze
 
+  url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.tar.gz"
   version OPENRESTY_VERSION
-
-  url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.zip"
   sha256 KONG_BUILD_TOOLS_SHA_SUM
+
+  keg_only :versioned_formula
 
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   depends_on "coreutils"
-  conflicts_with "kong/kong/luarocks", :because => "We switched over to a new build method and LuaRocks no longer needs to be installed separately. Please remove it with \"brew remove kong/kong/luarocks\"."
 
   def install
     # LuaJIT build is crashing in macOS Catalina. The defaults
@@ -33,22 +33,24 @@ class OpenrestyAT11931 < Formula
       "--openssl #{OPENSSL_VERSION}",
       "--luarocks #{LUAROCKS_VERSION}",
       "--pcre #{PCRE_VERSION}",
-      "-j #{ENV.make_jobs}"
+      "-j #{ENV.make_jobs}",
     ]
 
     # Debugging mode, unfortunately without debugging symbols
     if build.with? "debug"
       args << "--debug"
 
-      opoo "OpenResty and dependencies will be built --with-debug option, but without debugging symbols. For debugging symbols you have to compile it by hand."
+      opoo "OpenResty and dependencies will be built --with-debug option," \
+           "but without debugging symbols. For debugging symbols you have to" \
+           "compile it by hand."
     end
 
-    Dir.chdir('openresty-build-tools')
+    Dir.chdir("openresty-build-tools")
     system "./kong-ngx-build", *args
+  end
 
-    bin.install_symlink "#{prefix}/openresty/nginx/sbin/nginx"
-    bin.install_symlink "#{prefix}/openresty/bin/openresty"
-    bin.install_symlink "#{prefix}/openresty/bin/resty"
-    bin.install_symlink "#{prefix}/luarocks/bin/luarocks"
+  test do
+    system "#{prefix}/openresty/bin/openresty", "-V"
+    system "#{prefix}/openresty/bin/resty", "-V"
   end
 end
