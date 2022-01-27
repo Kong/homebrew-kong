@@ -3,11 +3,11 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
 
   KONG_OPENRESTY_VERSION = "1.19.3.2".freeze
-  KONG_VERSION = "2.7.0".freeze
+  KONG_VERSION = "2.7.1".freeze
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
-    sha256 "103bfb6e5714e29b585b939430ad42c664cef9de85bf53a7b94919703cf87f0e"
+    sha256 "e7a907057f3ce41c1bb758ba96f0bf4facd092ec7f8bb9654d54409addb761ac"
   end
 
   head do
