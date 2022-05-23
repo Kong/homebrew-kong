@@ -7,7 +7,7 @@ class Kong < Formula
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
-    sha256 "cd9f93f9eb7ceab931bc4e86816e2152190c81c8f3c18c80bbc74905ee0924f9"
+    sha256 "fbd7c971cca4fdad45bc1bea1adea12493d66c72c1862c66545ddb5c14c44dad"
   end
 
   head do
