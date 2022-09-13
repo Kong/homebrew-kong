@@ -1,12 +1,12 @@
-class OpenrestyAT11932 < Formula
+class OpenrestyAT12141 < Formula
   desc "Scalable Web Platform by Extending Nginx with Lua"
   homepage "https://openresty.org/"
-  KONG_BUILD_TOOLS_VERSION = "4.22.0".freeze
-  KONG_BUILD_TOOLS_SHA_SUM = "5ded6277bcbbddcba96e52be842c128b3959ac3d0330b14b99b9a0ac02ae3687".freeze
-  OPENRESTY_VERSION = "1.19.3.2".freeze
-  OPENSSL_VERSION = "1.1.1k".freeze
-  LUAROCKS_VERSION = "3.5.0".freeze
-  PCRE_VERSION = "8.44".freeze
+  KONG_BUILD_TOOLS_VERSION = "4.33.10".freeze
+  KONG_BUILD_TOOLS_SHA_SUM = "b588a6823e8175af3b1c42113b5cafc40b572f8364cf80f79678c84ffb94c47d".freeze
+  OPENRESTY_VERSION = "1.21.4.1".freeze
+  OPENSSL_VERSION = "1.1.1q".freeze
+  LUAROCKS_VERSION = "3.9.1".freeze
+  PCRE_VERSION = "8.45".freeze
 
   url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.tar.gz"
   version OPENRESTY_VERSION
@@ -52,5 +52,6 @@ class OpenrestyAT11932 < Formula
   test do
     system "#{prefix}/openresty/bin/openresty", "-V"
     system "#{prefix}/openresty/bin/resty", "-V"
+    system "#{prefix}/openresty/bin/resty", "-e", "'require(\"ffi\").load(\"jq\")'"
   end
 end
