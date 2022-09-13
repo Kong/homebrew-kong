@@ -52,6 +52,6 @@ class OpenrestyAT12141 < Formula
   test do
     system "#{prefix}/openresty/bin/openresty", "-V"
     system "#{prefix}/openresty/bin/resty", "-V"
-    system "#{prefix}/openresty/bin/resty", "-e", "'require(\"ffi\").load(\"jq\")'"
+    system "#{prefix}/openresty/bin/resty", "-e", "require(\"ffi\").load(\"jq\")"
   end
 end
