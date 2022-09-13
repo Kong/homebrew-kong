@@ -33,6 +33,7 @@ class OpenrestyAT12141 < Formula
       "--openssl #{OPENSSL_VERSION}",
       "--luarocks #{LUAROCKS_VERSION}",
       "--pcre #{PCRE_VERSION}",
+      "--atc-router 1.0.0",
       "-j #{ENV.make_jobs}",
     ]
 
