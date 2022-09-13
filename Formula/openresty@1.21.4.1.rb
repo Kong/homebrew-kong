@@ -17,6 +17,7 @@ class OpenrestyAT12141 < Formula
   option "with-debug", "Compile with support for debug logging but without proper gdb debugging symbols"
 
   depends_on "coreutils"
+  depends_on "rust" => :build
 
   def install
     # LuaJIT build is crashing in macOS Catalina. The defaults
