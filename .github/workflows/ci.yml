@@ -121,7 +121,5 @@ jobs:
           KONG_DATABASE=off \
           KONG_DECLARATIVE_CONFIG=kong.yml \
           KONG_PREFIX=prefix \
-            kong start
-
-          sleep 10
+            kong start -v
           curl http://localhost:8001 | grep Welcome
