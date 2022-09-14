@@ -123,4 +123,5 @@ jobs:
           KONG_PREFIX=prefix \
             kong start
 
+          sleep 10
           curl http://localhost:8001 | grep Welcome
