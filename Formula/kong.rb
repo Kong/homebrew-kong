@@ -31,7 +31,7 @@ class Kong < Formula
     bin.install_symlink "#{openresty_prefix}/openresty/bin/resty"
     bin.install_symlink "#{luarocks_prefix}/bin/luarocks"
 
-    prefix.install Dir["kong/include"]
+    prefix.install "kong/include"
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
