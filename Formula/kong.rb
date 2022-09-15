@@ -50,7 +50,7 @@ class Kong < Formula
   test do
     # attempt to load .proto files using code patched above
     # "setmetatable" is required to quiet a warning
-    system "#{prefix}/bin/resty", "-e", "setmetatable(_G,nil);require(\"kong.plugins.opentelemetry.proto\")"
+    system "#{bin}/resty", "-e", "setmetatable(_G,nil);require(\"kong.plugins.opentelemetry.proto\")"
 
     tempfile = `gmktemp --dry-run`
     system "#{bin}/kong version -vv 2>&1 | grep 'Kong:'"
