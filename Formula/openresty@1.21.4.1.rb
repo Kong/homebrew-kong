@@ -7,6 +7,10 @@ class OpenrestyAT12141 < Formula
   OPENSSL_VERSION = "1.1.1q".freeze
   LUAROCKS_VERSION = "3.9.1".freeze
   PCRE_VERSION = "8.45".freeze
+  ATC_ROUTER_VERSION = "1.0.1".freeze
+  RESTY_EVENTS_VERSION = "0.1.3".freeze
+  RESTY_LMDB_VERSION = "1.0.0".freeze
+  RESTY_WEBSOCKET_VERSION = "0.3.0".freeze
 
   url "https://github.com/Kong/kong-build-tools/archive/#{KONG_BUILD_TOOLS_VERSION}.tar.gz"
   version OPENRESTY_VERSION
@@ -35,7 +39,10 @@ class OpenrestyAT12141 < Formula
       "--luarocks #{LUAROCKS_VERSION}",
       "--pcre #{PCRE_VERSION}",
       "--ssl-provider openssl",
-      "--atc-router 1.0.1",
+      "--atc-router #{ATC_ROUTER_VERSION}",
+      "--resty-events #{RESTY_EVENTS_VERSION}",
+      "--resty-lmdb #{RESTY_LMDB_VERSION}",
+      "--resty-websocket #{RESTY_WEBSOCKET_VERSION}",
       "-j #{ENV.make_jobs}",
     ]
 
