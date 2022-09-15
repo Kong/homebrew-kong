@@ -136,6 +136,15 @@ diff -r -u a/kong/tools/grpc.lua b/kong/tools/grpc.lua
 --- a/kong/tools/grpc.lua	2022-09-12 14:38:55.000000000 +0200
 +++ b/kong/tools/grpc.lua	2022-09-15 10:54:04.000000000 +0200
 @@ -67,7 +67,7 @@
+#
+# ensure kong can read .proto files from <prefix>/include as "prefix.install"ed
+# "prefix.install" as with those for kong's opentelemetry implimentation
+#
+# see above "prefix.install"
+#
+# can be removed once luarocks supply thier own .proto files:
+#   https://github.com/Kong/kong/pull/8918/files
+#
    local protoc_instance = protoc.new()
    -- order by priority
    for _, v in ipairs {
