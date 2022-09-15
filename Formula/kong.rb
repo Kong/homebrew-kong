@@ -2,12 +2,12 @@ class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
 
-  KONG_OPENRESTY_VERSION = "1.19.3.2".freeze
-  KONG_VERSION = "2.8.1".freeze
+  KONG_OPENRESTY_VERSION = "1.21.4.1".freeze
+  KONG_VERSION = "3.0.0".freeze
 
   stable do
     url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
-    sha256 "cd9f93f9eb7ceab931bc4e86816e2152190c81c8f3c18c80bbc74905ee0924f9"
+    sha256 "73a8c39b5286d7f43d90fef704c30a926e44864a7dcb09802bf5c43709987117"
   end
 
   head do
@@ -30,6 +30,8 @@ class Kong < Formula
     bin.install_symlink "#{openresty_prefix}/openresty/bin/openresty"
     bin.install_symlink "#{openresty_prefix}/openresty/bin/resty"
     bin.install_symlink "#{luarocks_prefix}/bin/luarocks"
+
+    prefix.install "kong/include"
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
@@ -92,3 +94,53 @@ index 5937dad10..c3387fded 100644
  
  role = traditional
  kic = off
+diff -r -u a/kong/cmd/prepare.lua b/kong/cmd/prepare.lua
+--- a/kong/cmd/prepare.lua	2022-09-12 14:38:55.000000000 +0200
++++ b/kong/cmd/prepare.lua	2022-09-15 10:53:58.000000000 +0200
+@@ -23,8 +23,8 @@
+
+ Example usage:
+  kong migrations up
+- kong prepare -p /usr/local/kong -c kong.conf
+- nginx -p /usr/local/kong -c /usr/local/kong/nginx.conf
++ kong prepare -p HOMEBREW_PREFIX -c kong.conf
++ nginx -p HOMEBREW_PREFIX -c HOMEBREW_PREFIX/nginx.conf
+
+ Options:
+  -c,--conf       (optional string) configuration file
+diff -r -u a/kong/pdk/init.lua b/kong/pdk/init.lua
+--- a/kong/pdk/init.lua	2022-09-12 14:38:55.000000000 +0200
++++ b/kong/pdk/init.lua	2022-09-15 10:54:21.000000000 +0200
+@@ -49,7 +49,7 @@
+ --
+ -- @field kong.configuration
+ -- @usage
+--- print(kong.configuration.prefix) -- "/usr/local/kong"
++-- print(kong.configuration.prefix) -- "HOMEBREW_PREFIX"
+ -- -- this table is read-only; the following throws an error:
+ -- kong.configuration.prefix = "foo"
+
+diff -r -u a/kong/runloop/plugin_servers/process.lua b/kong/runloop/plugin_servers/process.lua
+--- a/kong/runloop/plugin_servers/process.lua	2022-09-12 14:38:55.000000000 +0200
++++ b/kong/runloop/plugin_servers/process.lua	2022-09-15 10:54:10.000000000 +0200
+@@ -61,7 +61,7 @@
+       local env_prefix = "pluginserver_" .. name:gsub("-", "_")
+       _servers[i] = {
+         name = name,
+-        socket = config[env_prefix .. "_socket"] or "/usr/local/kong/" .. name .. ".socket",
++        socket = config[env_prefix .. "_socket"] or "HOMEBREW_PREFIX/" .. name .. ".socket",
+         start_command = config[env_prefix .. "_start_cmd"] or ifexists("/usr/local/bin/"..name),
+         query_command = config[env_prefix .. "_query_cmd"] or ifexists("/usr/local/bin/query_"..name),
+       }
+diff -r -u a/kong/tools/grpc.lua b/kong/tools/grpc.lua
+--- a/kong/tools/grpc.lua	2022-09-12 14:38:55.000000000 +0200
++++ b/kong/tools/grpc.lua	2022-09-15 10:54:04.000000000 +0200
+@@ -67,7 +67,7 @@
+   local protoc_instance = protoc.new()
+   -- order by priority
+   for _, v in ipairs {
+-    "/usr/local/kong/include",
++    "HOMEBREW_PREFIX/include",
+     "/usr/local/opt/protobuf/include/", -- homebrew
+     "/usr/include",
+     "kong/include",
