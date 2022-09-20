@@ -40,9 +40,9 @@ class Kong < Formula
        end
   PATCH
 
-  def install
-    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
+  openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
 
+  def install
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
 
@@ -70,7 +70,20 @@ class Kong < Formula
   test do
     # attempt to load .proto files using code patched above
     # "setmetatable" is required to quiet a warning
-    system "#{bin}/resty", "-e", "setmetatable(_G,nil);require(\"kong.plugins.opentelemetry.proto\")"
+    ENV['LUA_PATH'] = [
+        "#{openresty_prefix}/luarocks/share/lua/5.1/?.lua;",
+        "#{prefix}/share/lua/5.1/?.lua;"
+      ].join
+
+    system(
+      "#{bin}/resty", \
+      "-e", \
+      <<~SCRIPT.gsub(/(^\s{6})|\n/, "")
+        require('luarocks.loader');
+        setmetatable(_G,nil);
+        require('kong.plugins.opentelemetry.proto')
+      SCRIPT
+    )
 
     tempfile = `gmktemp --dry-run`
     system "#{bin}/kong version -vv 2>&1 | grep 'Kong:'"
