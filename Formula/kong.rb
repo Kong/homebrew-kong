@@ -70,15 +70,15 @@ class Kong < Formula
   test do
     # attempt to load .proto files using code patched above
     # "setmetatable" is required to quiet a warning
-    ENV['LUA_PATH'] = [
-        "#{openresty_prefix}/luarocks/share/lua/5.1/?.lua;",
-        "#{prefix}/share/lua/5.1/?.lua;"
-      ].join
+    ENV["LUA_PATH"] = [
+      "#{openresty_prefix}/luarocks/share/lua/5.1/?.lua;",
+      "#{share}/lua/5.1/?.lua;",
+    ].join
 
     system(
       "#{bin}/resty", \
       "-e", \
-      <<~SCRIPT.gsub(/(^\s{6})|\n/, "")
+      <<~SCRIPT.gsub(/(^\s{6})|\n/, ""),
         require('luarocks.loader');
         setmetatable(_G,nil);
         require('kong.plugins.opentelemetry.proto')
