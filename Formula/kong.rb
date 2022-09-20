@@ -20,6 +20,26 @@ class Kong < Formula
 
   patch :DATA
 
+  # this allows .proto files to be sourced from kong's homebrew prefix when
+  # combined with include.install below (trace_service.proto, etc.)
+  #
+  # can be removed once our luarocks supplying thier own proto files:
+  #   https://github.com/Kong/kong/pull/8918
+  patch :p1, <<-PATCH.gsub(/^\s{2}/, "")
+    diff --git a/kong/tools/grpc.lua b/kong/tools/grpc.lua
+    index 7ed532a..cd23571 100644
+    --- a/kong/tools/grpc.lua
+    +++ b/kong/tools/grpc.lua
+    @@ -72,6 +72,7 @@ function _M.new()
+         "/usr/include",
+         "kong/include",
+         "spec/fixtures/grpc",
+    +    "HOMEBREW_PREFIX/Cellar/kong/#{KONG_VERSION}/include",
+       } do
+         protoc_instance:addpath(v)
+       end
+  PATCH
+
   def install
     openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
 
@@ -136,24 +156,3 @@ diff -r -u a/kong/runloop/plugin_servers/process.lua b/kong/runloop/plugin_serve
          start_command = config[env_prefix .. "_start_cmd"] or ifexists("/usr/local/bin/"..name),
          query_command = config[env_prefix .. "_query_cmd"] or ifexists("/usr/local/bin/query_"..name),
        }
-diff -r -u a/kong/tools/grpc.lua b/kong/tools/grpc.lua
---- a/kong/tools/grpc.lua	2022-09-12 14:38:55.000000000 +0200
-+++ b/kong/tools/grpc.lua	2022-09-15 10:54:04.000000000 +0200
-@@ -67,7 +67,7 @@
-#
-# ensure kong can read .proto files from <prefix>/include as "prefix.install"ed
-# "prefix.install" as with those for kong's opentelemetry implimentation
-#
-# see above "prefix.install"
-#
-# can be removed once luarocks supply thier own .proto files:
-#   https://github.com/Kong/kong/pull/8918/files
-#
-   local protoc_instance = protoc.new()
-   -- order by priority
-   for _, v in ipairs {
--    "/usr/local/kong/include",
-+    "HOMEBREW_PREFIX/include",
-     "/usr/local/opt/protobuf/include/", -- homebrew
-     "/usr/include",
-     "kong/include",
