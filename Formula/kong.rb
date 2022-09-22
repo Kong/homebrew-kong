@@ -40,9 +40,9 @@ class Kong < Formula
        end
   PATCH
 
-  openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
-
   def install
+    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
+
     luarocks_prefix = openresty_prefix + "luarocks"
     openssl_prefix = openresty_prefix + "openssl"
 
