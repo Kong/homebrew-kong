@@ -68,6 +68,8 @@ class Kong < Formula
   end
 
   test do
+    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
+
     # attempt to load .proto files using code patched above
     # "setmetatable" is required to quiet a warning
     ENV["LUA_PATH"] = [
