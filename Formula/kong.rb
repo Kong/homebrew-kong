@@ -77,6 +77,10 @@ class Kong < Formula
       "#{share}/lua/5.1/?.lua;",
     ].join
 
+    ENV["LUA_CPATH"] = [
+      "#{lib}/lua/5.1/?.so",
+    ].join
+
     system(
       "#{bin}/resty", \
       "-e", \
