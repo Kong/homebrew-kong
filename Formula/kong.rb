@@ -20,6 +20,26 @@ class Kong < Formula
 
   patch :DATA
 
+  # this allows .proto files to be sourced from kong's homebrew prefix when
+  # combined with include.install below (trace_service.proto, etc.)
+  #
+  # can be removed once our luarocks supplying thier own proto files:
+  #   https://github.com/Kong/kong/pull/8918
+  patch :p1, <<-PATCH.gsub(/^\s{2}/, "")
+    diff --git a/kong/tools/grpc.lua b/kong/tools/grpc.lua
+    index 7ed532a..cd23571 100644
+    --- a/kong/tools/grpc.lua
+    +++ b/kong/tools/grpc.lua
+    @@ -72,6 +72,7 @@ function _M.new()
+         "/usr/include",
+         "kong/include",
+         "spec/fixtures/grpc",
+    +    "HOMEBREW_PREFIX/Cellar/kong/#{KONG_VERSION}/include",
+       } do
+         protoc_instance:addpath(v)
+       end
+  PATCH
+
   def install
     openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
 
@@ -48,6 +68,29 @@ class Kong < Formula
   end
 
   test do
+    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
+
+    # attempt to load .proto files using code patched above
+    # "setmetatable" is required to quiet a warning
+    ENV["LUA_PATH"] = [
+      "#{openresty_prefix}/luarocks/share/lua/5.1/?.lua;",
+      "#{share}/lua/5.1/?.lua;",
+    ].join
+
+    ENV["LUA_CPATH"] = [
+      "#{lib}/lua/5.1/?.so",
+    ].join
+
+    system(
+      "#{bin}/resty", \
+      "-e", \
+      <<~SCRIPT.gsub(/(^\s{6})|\n/, ""),
+        require('luarocks.loader');
+        setmetatable(_G,nil);
+        require('kong.plugins.opentelemetry.proto')
+      SCRIPT
+    )
+
     tempfile = `gmktemp --dry-run`
     system "#{bin}/kong version -vv 2>&1 | grep 'Kong:'"
     system "kong", "config", "init", tempfile
@@ -55,25 +98,25 @@ class Kong < Formula
   end
 end
 
-# patch Kong default `prefix` to `HOMEBREW_PREFIX/opt/kong`
-# to ensure it's writeable
-# additionally, add brew on m1 paths to lua_path and lua_cpath
 __END__
 diff --git a/bin/kong b/bin/kong
-index 3e0ecf97d..b03e18a23 100755
 --- a/bin/kong
 +++ b/bin/kong
 @@ -4,6 +4,7 @@ setmetatable(_G, nil)
+#
+# patch bin/kong's LUA_PATH & LUA_CPATH with HOMEBREW_PREFIX (both intel & arm)
+# homebrew substitutes "HOMEBREW_PREFIX" when patching:
+#   https://docs.brew.sh/Formula-Cookbook#patches
+#
  
  pcall(require, "luarocks.loader")
  
 -package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. package.path
-+package.cpath = (os.getenv("KONG_LUA_CPATH_OVERRIDE") or "") .. "/opt/homebrew/lib/lua/5.1/?.so;" .. package.cpath
-+package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. "/opt/homebrew/share/lua/5.1/?.lua;/opt/homebrew/share/lua/5.1/?/init.lua;" .. package.path
++package.cpath = (os.getenv("KONG_LUA_CPATH_OVERRIDE") or "") .. "HOMEBREW_PREFIX/lib/lua/5.1/?.so;" .. package.cpath
++package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. "HOMEBREW_PREFIX/share/lua/5.1/?.lua;HOMEBREW_PREFIX/share/lua/5.1/?/init.lua;" .. package.path
  
  require("kong.cmd.init")(arg)
 diff --git a/kong/templates/kong_defaults.lua b/kong/templates/kong_defaults.lua
-index 5937dad10..c3387fded 100644
 --- a/kong/templates/kong_defaults.lua
 +++ b/kong/templates/kong_defaults.lua
 @@ -1,5 +1,5 @@
@@ -89,8 +132,8 @@ index 5937dad10..c3387fded 100644
  lua_ssl_protocols = TLSv1.1 TLSv1.2 TLSv1.3
 -lua_package_path = ./?.lua;./?/init.lua;
 -lua_package_cpath = NONE
-+lua_package_path = ./?.lua;./?/init.lua;/opt/homebrew/share/lua/5.1/?.lua;/opt/homebrew/share/lua/5.1/?/init.lua;;
-+lua_package_cpath = /opt/homebrew/lib/lua/5.1/?.so;;
++lua_package_path = ./?.lua;./?/init.lua;HOMEBREW_PREFIX/share/lua/5.1/?.lua;HOMEBREW_PREFIX/share/lua/5.1/?/init.lua;;
++lua_package_cpath = HOMEBREW_PREFIX/lib/lua/5.1/?.so;;
  
  role = traditional
  kic = off
@@ -132,15 +175,3 @@ diff -r -u a/kong/runloop/plugin_servers/process.lua b/kong/runloop/plugin_serve
          start_command = config[env_prefix .. "_start_cmd"] or ifexists("/usr/local/bin/"..name),
          query_command = config[env_prefix .. "_query_cmd"] or ifexists("/usr/local/bin/query_"..name),
        }
-diff -r -u a/kong/tools/grpc.lua b/kong/tools/grpc.lua
---- a/kong/tools/grpc.lua	2022-09-12 14:38:55.000000000 +0200
-+++ b/kong/tools/grpc.lua	2022-09-15 10:54:04.000000000 +0200
-@@ -67,7 +67,7 @@
-   local protoc_instance = protoc.new()
-   -- order by priority
-   for _, v in ipairs {
--    "/usr/local/kong/include",
-+    "HOMEBREW_PREFIX/include",
-     "/usr/local/opt/protobuf/include/", -- homebrew
-     "/usr/include",
-     "kong/include",
