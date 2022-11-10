@@ -59,6 +59,7 @@ $ brew tap kong/kong
 <snip>
 
 $ cd /usr/local/Homebrew/Library/Taps/kong/homebrew-kong
+Note: In Monterey it is /opt/homebrew/Library/Taps/kong/homebrew-kong
 
 $ git checkout release/3.0.0
 Branch 'release/3.0.0' set up to track remote branch 'release/3.0.0' from 'origin'.
