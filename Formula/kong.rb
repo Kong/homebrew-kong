@@ -103,12 +103,7 @@ diff --git a/bin/kong b/bin/kong
 --- a/bin/kong
 +++ b/bin/kong
 @@ -4,6 +4,7 @@ setmetatable(_G, nil)
-#
-# patch bin/kong's LUA_PATH & LUA_CPATH with HOMEBREW_PREFIX (both intel & arm)
-# homebrew substitutes "HOMEBREW_PREFIX" when patching:
-#   https://docs.brew.sh/Formula-Cookbook#patches
-#
- 
+
  pcall(require, "luarocks.loader")
  
 -package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. package.path
