@@ -1,3 +1,5 @@
+require "fileutils"
+
 class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
@@ -13,6 +15,21 @@ class Kong < Formula
   head do
     url "https://github.com/Kong/kong.git", branch: "master"
   end
+
+  depends_on "automake" => :build
+  depends_on "bazelisk" => :build
+  depends_on "cmake" => :build
+  depends_on "coreutils" => :build
+  depends_on "curl" => :build
+  depends_on "git" => :build
+  depends_on "libyaml" => :build
+  depends_on "m4" => :build
+  depends_on "openjdk" => :build
+  depends_on "perl" => :build
+  depends_on "protobuf" => :build
+  depends_on "python" => :build
+  depends_on "rust" => :build
+  depends_on "zlib" => :build
 
   env :std
 
@@ -38,39 +55,40 @@ class Kong < Formula
        end
   PATCH
 
-  depends_on "openjdk" => :build
-  depends_on "bazelisk" => :build
-  depends_on "cmake" => :build
-  depends_on "python" => :build
-  depends_on "rust" => :build
-  depends_on "automake" => :build
-  depends_on "curl" => :build
-  depends_on "git" => :build
-  depends_on "libyaml" => :build
-  depends_on "m4" => :build
-  depends_on "protobuf" => :build
-  depends_on "perl" => :build
-  depends_on "coreutils" => :build
-  depends_on "zlib" => :build
-
   def fix_executable(install_map, executable_path)
     `otool -L #{executable_path}`.scan(/(?<=\t)(.*)(?= \(.*\n)/) do |paths|
       old_path = paths[0]
-      lib_name = old_path.sub(/.*\//, '')
+      lib_name = old_path.sub(%r{.*/}, "")
       new_path = install_map[lib_name]
-      if new_path then
-        system "install_name_tool -change #{old_path} #{new_path} #{executable_path}"
-      end
+      # homebrew wants us to use the macho library, but it does not work here for some reason
+      system "/usr/bin/install_name_tool", "-change", old_path, new_path, executable_path if new_path
     end
   end
 
   def install
-
-    tmpdir = "%s/kong-build.%f.%i" % [ENV["HOMEBREW_TEMP"], rand(), Time.now.to_i]
-    bazel = "bazel --output_user_root=#{tmpdir}/bazel"
+    tmpdir = format("%<prefix>s/kong-build.%<random>f.%<now>i",
+                    prefix: ENV["HOMEBREW_TEMP"],
+                    random: rand,
+                    now:    Time.now.to_i)
+    bazel_output_user_root = "--output_user_root=#{tmpdir}/bazel"
 
     # Build kong, carefully setting the environment so that brew and bazel cooperate
-    system "HOME=#{tmpdir}/home PATH=$(brew --prefix python)/libexec/bin:/usr/bin:$PATH #{bazel} build --config=release //build:kong --action_env=HOME --action_env=INSTALL_DESTDIR=#{prefix} --verbose_failures"
+    python_prefix = `brew --prefix python`.strip
+    path = ENV["PATH"]
+
+    with_env(
+      "HOME" => "#{tmpdir}/home",
+      "PATH" => "#{python_prefix}/libexec/bin:/usr/bin:#{path}",
+    ) do
+      system "bazel",
+             bazel_output_user_root,
+             "build",
+             "--config=release",
+             "//build:kong",
+             "--action_env=HOME",
+             "--action_env=INSTALL_DESTDIR=#{prefix}",
+             "--verbose_failures"
+    end
 
     prefix.install Dir["bazel-bin/build/kong-dev/*"]
     include.install "kong/include/opentelemetry"
@@ -79,31 +97,29 @@ class Kong < Formula
     bin.install_symlink "#{prefix}/openresty/bin/resty"
     bin.install_symlink "#{prefix}/openresty/nginx/sbin/nginx"
 
-    install_map = {}
-
     # Homebrew automatically fixes the dylib IDs of the dynamic
     # libraries it relocates, but fails to change the references in
     # them and in our executables.  Thus, we make a pass over them,
     # changing the paths to where they are installed.  A better way
     # may be to use @rpath, but that'd require changes in how we build
     # nginx which is beyond what I can do at this point.
-    Dir["#{prefix}/**/*.dylib"].each do |new_path|
-      install_map[new_path.sub(/.*\//, '')] = new_path
-    end
 
-    Dir["#{prefix}/**/*.dylib"].each do |new_path|
+    dylibs = Dir["#{prefix}/**/*.dylib"]
+
+    # install_map contains a map from dylib name (i.e. foo.dylib) to installed path
+    install_map = dylibs.to_h { |new_path| [new_path.sub(%r{.*/}, ""), new_path] }
+
+    dylibs.each do |new_path|
       fix_executable(install_map, new_path)
-      #system "codesign -sf - #{new_path}"
     end
 
-    fix_executable(install_map, "#{prefix}/bin/nginx")
+    fix_executable(install_map, "#{bin}/nginx")
     fix_executable(install_map, "#{prefix}/kong/bin/openssl")
-
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
 
-    system "#{prefix}/bin/luarocks",
+    system "#{bin}/luarocks",
            "--tree=#{prefix}",
            "make",
            "CRYPTO_DIR=#{prefix}/openssl",
@@ -111,10 +127,10 @@ class Kong < Formula
            "YAML_LIBDIR=#{yaml_libdir}",
            "YAML_INCDIR=#{yaml_incdir}"
 
-    system "#{bazel} clean --expunge"
-    system "#{bazel} shutdown"
-    system "chmod", "-R", "u+w", "#{tmpdir}"
-    system "rm -rf #{tmpdir}"
+    system "bazel", bazel_output_user_root, "clean", "--expunge"
+    system "bazel", bazel_output_user_root, "shutdown"
+    chmod_R "u+w", tmpdir
+    rm_r tmpdir, force: true
   end
 
   test do
