@@ -1,22 +1,20 @@
 class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
+  license "Apache License Version 2.0"
 
-  KONG_OPENRESTY_VERSION = "1.21.4.1".freeze
-  KONG_VERSION = "3.1.1".freeze
+  KONG_VERSION = "3.2.1".freeze
 
   stable do
-    url "https://download.konghq.com/gateway-src/kong-#{KONG_VERSION}.tar.gz"
-    sha256 "849c6b6fb116f760b107e6aa52c5eb3b2a7b143281853e33d7249b2db87c87ad"
+    url "https://github.com/Kong/kong/archive/refs/tags/#{KONG_VERSION}.tar.gz"
+    sha256 "f1583cd7ae1c8e29daa6008b2ea493c432b918d0cf3faf918891eeb314ac1499"
   end
 
   head do
     url "https://github.com/Kong/kong.git", branch: "master"
   end
 
-  depends_on "libyaml"
-  depends_on "coreutils"
-  depends_on "kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"
+  env :std
 
   patch :DATA
 
@@ -40,40 +38,89 @@ class Kong < Formula
        end
   PATCH
 
+  depends_on "openjdk" => :build
+  depends_on "bazelisk" => :build
+  depends_on "cmake" => :build
+  depends_on "python" => :build
+  depends_on "rust" => :build
+  depends_on "automake" => :build
+  depends_on "curl" => :build
+  depends_on "git" => :build
+  depends_on "libyaml" => :build
+  depends_on "m4" => :build
+  depends_on "protobuf" => :build
+  depends_on "perl" => :build
+  depends_on "coreutils" => :build
+  depends_on "zlib" => :build
+
+  def fix_executable(install_map, executable_path)
+    `otool -L #{executable_path}`.scan(/(?<=\t)(.*)(?= \(.*\n)/) do |paths|
+      old_path = paths[0]
+      lib_name = old_path.sub(/.*\//, '')
+      new_path = install_map[lib_name]
+      if new_path then
+        system "install_name_tool -change #{old_path} #{new_path} #{executable_path}"
+      end
+    end
+  end
+
   def install
-    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
 
-    luarocks_prefix = openresty_prefix + "luarocks"
-    openssl_prefix = openresty_prefix + "openssl"
+    tmpdir = "%s/kong-build.%f.%i" % [ENV["HOMEBREW_TEMP"], rand(), Time.now.to_i]
+    bazel = "bazel --output_user_root=#{tmpdir}/bazel"
 
-    bin.install_symlink "#{openresty_prefix}/openresty/nginx/sbin/nginx"
-    bin.install_symlink "#{openresty_prefix}/openresty/bin/openresty"
-    bin.install_symlink "#{openresty_prefix}/openresty/bin/resty"
-    bin.install_symlink "#{luarocks_prefix}/bin/luarocks"
+    # Build kong, carefully setting the environment so that brew and bazel cooperate
+    system "HOME=#{tmpdir}/home PATH=$(brew --prefix python)/libexec/bin:/usr/bin:$PATH #{bazel} build --config=release //build:kong --action_env=HOME --action_env=INSTALL_DESTDIR=#{prefix} --verbose_failures"
 
-    prefix.install "kong/include"
+    prefix.install Dir["bazel-bin/build/kong-dev/*"]
+    include.install "kong/include/opentelemetry"
+
+    bin.install "bin/kong"
+    bin.install_symlink "#{prefix}/openresty/bin/resty"
+    bin.install_symlink "#{prefix}/openresty/nginx/sbin/nginx"
+
+    install_map = {}
+
+    # Homebrew automatically fixes the dylib IDs of the dynamic
+    # libraries it relocates, but fails to change the references in
+    # them and in our executables.  Thus, we make a pass over them,
+    # changing the paths to where they are installed.  A better way
+    # may be to use @rpath, but that'd require changes in how we build
+    # nginx which is beyond what I can do at this point.
+    Dir["#{prefix}/**/*.dylib"].each do |new_path|
+      install_map[new_path.sub(/.*\//, '')] = new_path
+    end
+
+    Dir["#{prefix}/**/*.dylib"].each do |new_path|
+      fix_executable(install_map, new_path)
+      #system "codesign -sf - #{new_path}"
+    end
+
+    fix_executable(install_map, "#{prefix}/bin/nginx")
+    fix_executable(install_map, "#{prefix}/kong/bin/openssl")
+
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
 
-    system "#{luarocks_prefix}/bin/luarocks",
+    system "#{prefix}/bin/luarocks",
            "--tree=#{prefix}",
            "make",
-           "CRYPTO_DIR=#{openssl_prefix}",
-           "OPENSSL_DIR=#{openssl_prefix}",
+           "CRYPTO_DIR=#{prefix}/openssl",
+           "OPENSSL_DIR=#{prefix}/openssl",
            "YAML_LIBDIR=#{yaml_libdir}",
            "YAML_INCDIR=#{yaml_incdir}"
 
-    bin.install "bin/kong"
+    system "#{bazel} clean --expunge"
+    system "#{bazel} shutdown"
+    system "chmod", "-R", "u+w", "#{tmpdir}"
+    system "rm -rf #{tmpdir}"
   end
 
   test do
-    openresty_prefix = Formula["kong/kong/openresty@#{KONG_OPENRESTY_VERSION}"].prefix
-
     # attempt to load .proto files using code patched above
     # "setmetatable" is required to quiet a warning
     ENV["LUA_PATH"] = [
-      "#{openresty_prefix}/luarocks/share/lua/5.1/?.lua;",
       "#{share}/lua/5.1/?.lua;",
     ].join
 
@@ -99,6 +146,19 @@ class Kong < Formula
 end
 
 __END__
+diff --git a/build/luarocks/BUILD.luarocks.bazel b/build/luarocks/BUILD.luarocks.bazel
+index 2b2e960..e0c5fa1 100644
+--- a/build/luarocks/BUILD.luarocks.bazel
++++ b/build/luarocks/BUILD.luarocks.bazel
+@@ -65,7 +65,7 @@ OPENSSL_DIR=$$WORKSPACE_PATH/$$(echo '$(locations @openssl)' | awk '{print $$1}'
+
+ # we use system libyaml on macos
+ if [[ "$$OSTYPE" == "darwin"* ]]; then
+-    YAML_DIR=$$(brew --prefix)/opt/libyaml
++    YAML_DIR=HOMEBREW_PREFIX/opt/libyaml
+ elif [[ -d $$WORKSPACE_PATH/$(BINDIR)/external/cross_deps_libyaml/libyaml ]]; then
+     # TODO: is there a good way to use locations but doesn't break non-cross builds?
+     YAML_DIR=$$WORKSPACE_PATH/$(BINDIR)/external/cross_deps_libyaml/libyaml
 diff --git a/bin/kong b/bin/kong
 --- a/bin/kong
 +++ b/bin/kong

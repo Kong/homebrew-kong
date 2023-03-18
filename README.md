@@ -34,8 +34,6 @@ $ brew install --HEAD kong
 Cloning into '/Users/if/Library/Caches/Homebrew/kong--git'...
 ==> Checking out branch master
 ==> Installing kong from kong/kong
-==> Installing dependencies for kong/kong/kong: kong/kong/openresty@1.19.3.2
-==> Installing kong/kong/kong dependency: kong/kong/openresty@1.19.3.2
 <snip>
 ```
 
