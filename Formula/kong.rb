@@ -3,7 +3,7 @@ require "fileutils"
 class Kong < Formula
   desc "Open source Microservices and API Gateway"
   homepage "https://docs.konghq.com"
-  license "Apache License Version 2.0"
+  license "Apache-2.0"
 
   KONG_VERSION = "3.2.1".freeze
 
@@ -55,7 +55,7 @@ class Kong < Formula
        end
   PATCH
 
-  def fix_executable(install_map, executable_path)
+  def fix_dylib_references(install_map, executable_path)
     `otool -L #{executable_path}`.scan(/(?<=\t)(.*)(?= \(.*\n)/) do |paths|
       old_path = paths[0]
       lib_name = old_path.sub(%r{.*/}, "")
@@ -110,11 +110,16 @@ class Kong < Formula
     install_map = dylibs.to_h { |new_path| [new_path.sub(%r{.*/}, ""), new_path] }
 
     dylibs.each do |new_path|
-      fix_executable(install_map, new_path)
+      fix_dylib_references(install_map, new_path)
     end
 
-    fix_executable(install_map, "#{bin}/nginx")
-    fix_executable(install_map, "#{prefix}/kong/bin/openssl")
+    Dir["#{prefix}/**/*.so"] do |so_file|
+      chmod "u+w", so_file
+      fix_dylib_references(install_map, so_file)
+    end
+
+    fix_dylib_references(install_map, "#{bin}/nginx")
+    fix_dylib_references(install_map, "#{prefix}/kong/bin/openssl")
 
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
@@ -156,8 +161,8 @@ class Kong < Formula
 
     tempfile = `gmktemp --dry-run`
     system "#{bin}/kong version -vv 2>&1 | grep 'Kong:'"
-    system "kong", "config", "init", tempfile
-    system "kong", "check", tempfile
+    system "#{bin}/kong", "config", "init", tempfile
+    system "#{bin}/kong", "check", tempfile
   end
 end
 
