@@ -74,11 +74,12 @@ class Kong < Formula
 
     # Build kong, carefully setting the environment so that brew and bazel cooperate
     python_prefix = `brew --prefix python`.strip
+    coreutils_prefix = `brew --prefix coreutils`.strip
     path = ENV["PATH"]
 
     with_env(
       "HOME" => "#{tmpdir}/home",
-      "PATH" => "#{python_prefix}/libexec/bin:/usr/bin:#{path}",
+      "PATH" => "#{python_prefix}/libexec/bin:/usr/bin:#{coreutils_prefix}/libexec/gnubin:#{path}",
     ) do
       system "bazel",
              bazel_output_user_root,
@@ -97,6 +98,17 @@ class Kong < Formula
     bin.install_symlink "#{prefix}/openresty/bin/resty"
     bin.install_symlink "#{prefix}/openresty/nginx/sbin/nginx"
 
+    yaml_libdir = Formula["libyaml"].opt_lib
+    yaml_incdir = Formula["libyaml"].opt_include
+
+    system "#{bin}/luarocks",
+           "--tree=#{prefix}",
+           "make",
+           "CRYPTO_DIR=#{prefix}/openssl",
+           "OPENSSL_DIR=#{prefix}/openssl",
+           "YAML_LIBDIR=#{yaml_libdir}",
+           "YAML_INCDIR=#{yaml_incdir}"
+
     # Homebrew automatically fixes the dylib IDs of the dynamic
     # libraries it relocates, but fails to change the references in
     # them and in our executables.  Thus, we make a pass over them,
@@ -113,24 +125,13 @@ class Kong < Formula
       fix_dylib_references(install_map, new_path)
     end
 
-    Dir["#{prefix}/**/*.so"] do |so_file|
+    Dir["#{prefix}/**/*.so"].each do |so_file|
       chmod "u+w", so_file
       fix_dylib_references(install_map, so_file)
     end
 
     fix_dylib_references(install_map, "#{bin}/nginx")
     fix_dylib_references(install_map, "#{prefix}/kong/bin/openssl")
-
-    yaml_libdir = Formula["libyaml"].opt_lib
-    yaml_incdir = Formula["libyaml"].opt_include
-
-    system "#{bin}/luarocks",
-           "--tree=#{prefix}",
-           "make",
-           "CRYPTO_DIR=#{prefix}/openssl",
-           "OPENSSL_DIR=#{prefix}/openssl",
-           "YAML_LIBDIR=#{yaml_libdir}",
-           "YAML_INCDIR=#{yaml_incdir}"
 
     system "bazel", bazel_output_user_root, "clean", "--expunge"
     system "bazel", bazel_output_user_root, "shutdown"
