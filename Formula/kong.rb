@@ -79,7 +79,7 @@ class Kong < Formula
 
     with_env(
       "HOME" => "#{tmpdir}/home",
-      "PATH" => "#{python_prefix}/libexec/bin:/usr/bin:#{coreutils_prefix}/libexec/gnubin:#{path}",
+      "PATH" => "#{python_prefix}/libexec/bin:#{coreutils_prefix}/libexec/gnubin:/usr/bin:#{path}",
     ) do
       system "bazel",
              bazel_output_user_root,
