@@ -113,7 +113,7 @@ class Kong < Formula
       fix_dylib_references(install_map, so_file)
     end
 
-    fix_dylib_references(install_map, "#{bin}/nginx")
+    fix_dylib_references(install_map, "#{prefix}/openresty/nginx/sbin/nginx")
     fix_dylib_references(install_map, "#{prefix}/kong/bin/openssl")
 
     system "bazel", bazel_output_user_root, "clean", "--expunge"
