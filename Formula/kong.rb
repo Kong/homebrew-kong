@@ -34,8 +34,7 @@ class Kong < Formula
   # this allows .proto files to be sourced from kong's homebrew prefix when
   # combined with include.install below (trace_service.proto, etc.)
   #
-  # can be removed once our luarocks supplying thier own proto files:
-  #   https://github.com/Kong/kong/pull/8918
+  # can be removed once our luarocks supplying thier own proto files (KAG-971)
   patch :p1, <<-PATCH.gsub(/^\s{2}/, "")
     diff --git a/kong/tools/grpc.lua b/kong/tools/grpc.lua
     index 7ed532a..cd23571 100644
