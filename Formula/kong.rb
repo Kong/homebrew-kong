@@ -91,15 +91,7 @@ class Kong < Formula
     include.install "kong/include/opentelemetry"
 
     bin.install "bin/kong"
-    bin.install_symlink "#{prefix}/openresty/bin/opm"
     bin.install_symlink "#{prefix}/openresty/bin/resty"
-    bin.install_symlink "#{prefix}/openresty/bin/restydoc"
-    bin.install_symlink "#{prefix}/openresty/bin/restydoc-index"
-    bin.install_symlink "#{prefix}/openresty/nginx/sbin/nginx"
-    ln_s "#{bin}/nginx", "#{bin}/openresty"
-
-    yaml_libdir = Formula["libyaml"].opt_lib
-    yaml_incdir = Formula["libyaml"].opt_include
 
     # Homebrew automatically fixes the dylib IDs of the dynamic
     # libraries it relocates, but fails to change the references in
