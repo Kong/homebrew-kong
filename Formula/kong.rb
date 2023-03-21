@@ -101,14 +101,6 @@ class Kong < Formula
     yaml_libdir = Formula["libyaml"].opt_lib
     yaml_incdir = Formula["libyaml"].opt_include
 
-    system "#{bin}/luarocks",
-           "--tree=#{prefix}",
-           "make",
-           "CRYPTO_DIR=#{prefix}/openssl",
-           "OPENSSL_DIR=#{prefix}/openssl",
-           "YAML_LIBDIR=#{yaml_libdir}",
-           "YAML_INCDIR=#{yaml_incdir}"
-
     # Homebrew automatically fixes the dylib IDs of the dynamic
     # libraries it relocates, but fails to change the references in
     # them and in our executables.  Thus, we make a pass over them,
