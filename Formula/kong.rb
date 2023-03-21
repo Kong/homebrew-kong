@@ -20,15 +20,11 @@ class Kong < Formula
   depends_on "bazelisk" => :build
   depends_on "cmake" => :build
   depends_on "coreutils" => :build
-  depends_on "curl" => :build
-  depends_on "git" => :build
   depends_on "libyaml" => :build
   depends_on "m4" => :build
-  depends_on "openjdk" => :build
   depends_on "perl" => :build
   depends_on "protobuf" => :build
   depends_on "python" => :build
-  depends_on "rust" => :build
   depends_on "zlib" => :build
 
   env :std
