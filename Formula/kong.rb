@@ -72,6 +72,8 @@ class Kong < Formula
     coreutils_prefix = `brew --prefix coreutils`.strip
     path = ENV["PATH"]
 
+    inreplace "kong/cmd/utils/nginx_signals.lua", "/usr/local", prefix
+
     with_env(
       "HOME" => "#{tmpdir}/home",
       "PATH" => "#{python_prefix}/libexec/bin:#{coreutils_prefix}/libexec/gnubin:/usr/bin:#{path}",
