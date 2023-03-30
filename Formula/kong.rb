@@ -5,11 +5,11 @@ class Kong < Formula
   homepage "https://docs.konghq.com"
   license "Apache-2.0"
 
-  KONG_VERSION = "3.2.1".freeze
+  KONG_VERSION = "3.2.2".freeze
 
   stable do
     url "https://github.com/Kong/kong/archive/refs/tags/#{KONG_VERSION}.tar.gz"
-    sha256 "f1583cd7ae1c8e29daa6008b2ea493c432b918d0cf3faf918891eeb314ac1499"
+    sha256 "bcd85a75c5c3cbde64dbc5d11992c85ae2d934cd7c1e3bf409ec55dd61d119c9"
   end
 
   head do
