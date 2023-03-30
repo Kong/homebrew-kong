@@ -16,6 +16,8 @@ class Kong < Formula
     url "https://github.com/Kong/kong.git", branch: "master"
   end
 
+  disable! date: "2023-04-05", because: :unmaintained
+
   depends_on "automake" => :build
   depends_on "bazelisk" => :build
   depends_on "cmake" => :build
@@ -172,11 +174,11 @@ diff --git a/bin/kong b/bin/kong
 @@ -4,6 +4,7 @@ setmetatable(_G, nil)
 
  pcall(require, "luarocks.loader")
- 
+
 -package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. package.path
 +package.cpath = (os.getenv("KONG_LUA_CPATH_OVERRIDE") or "") .. "HOMEBREW_PREFIX/lib/lua/5.1/?.so;" .. package.cpath
 +package.path = (os.getenv("KONG_LUA_PATH_OVERRIDE") or "") .. "./?.lua;./?/init.lua;" .. "HOMEBREW_PREFIX/share/lua/5.1/?.lua;HOMEBREW_PREFIX/share/lua/5.1/?/init.lua;" .. package.path
- 
+
  require("kong.cmd.init")(arg)
 diff --git a/kong/templates/kong_defaults.lua b/kong/templates/kong_defaults.lua
 --- a/kong/templates/kong_defaults.lua
@@ -196,7 +198,7 @@ diff --git a/kong/templates/kong_defaults.lua b/kong/templates/kong_defaults.lua
 -lua_package_cpath = NONE
 +lua_package_path = ./?.lua;./?/init.lua;HOMEBREW_PREFIX/share/lua/5.1/?.lua;HOMEBREW_PREFIX/share/lua/5.1/?/init.lua;;
 +lua_package_cpath = HOMEBREW_PREFIX/lib/lua/5.1/?.so;;
- 
+
  role = traditional
  kic = off
 diff -r -u a/kong/cmd/prepare.lua b/kong/cmd/prepare.lua
