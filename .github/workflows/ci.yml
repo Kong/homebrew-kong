@@ -104,7 +104,7 @@ jobs:
             --online \
             {${{ steps.changes.outputs.formulae }}}
 
-      - name: Install/Run Kong
+      - name: Installation of Kong should fail
         run: |
           set -x
 
@@ -114,12 +114,5 @@ jobs:
           # skip cleanup since this is an ephemeral build
           export HOMEBREW_NO_INSTALL_CLEANUP=1
 
-          brew install kong
+          ! brew install kong
 
-          kong config init
-
-          KONG_DATABASE=off \
-          KONG_DECLARATIVE_CONFIG=kong.yml \
-          KONG_PREFIX=prefix \
-            kong start -v
-          curl http://localhost:8001 | grep Welcome
