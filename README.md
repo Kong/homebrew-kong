@@ -1,3 +1,11 @@
+# DEPRECATED
+
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+The Kong homebrew formula is no longer supported, please consider using Docker instead for local development:
+
+https://hub.docker.com/_/kong
+
 # Homebrew Kong Tap
 
 Homebrew tap for [Kong] :beer:
